@@ -1,0 +1,445 @@
+import { clamp, cross, dot, magnitude } from "../Utils/math.js";
+
+export default function Physics(options = {
+  gravity: {
+    x: 0,
+    y: 9.81,
+    scale: 1
+  },
+  worldBounds: {
+    minx: 0,
+    miny: 0,
+    maxx: 0,
+    maxy: 0,
+  }
+}) {
+  const worldBounds = options.worldBounds;
+  const gravity = options.gravity;
+
+  this.IntegrateMotions = function() {
+    this.query = [
+      "force_x",
+      "force_y",
+      "velocity_x",
+      "velocity_y",
+      "position_x",
+      "position_y",
+      "inv_mass",
+      "torque",
+      "angular_velocity",
+      "rotation",
+      "inv_inertia",
+    ];
+    this.update = function(time, entities) {
+      const force_x = entities["force_x"];
+      const force_y = entities["force_y"];
+      const velocity_x = entities["velocity_x"];
+      const velocity_y = entities["velocity_y"];
+      const position_x = entities["position_x"];
+      const position_y = entities["position_y"];
+      const inv_mass = entities["inv_mass"];
+      const torque = entities["torque"];
+      const angular_velocity = entities["angular_velocity"];
+      const rotation = entities["rotation"];
+      const inv_inertia = entities["inv_inertia"];
+
+      const deltaTime = time.deltaTime;
+      for (let i = 0; i < entities.count; i++) {
+        const acceleration_x = force_x.get(i) * inv_mass.get(i) + gravity.x * gravity.scale;
+        const acceleration_y = force_y.get(i) * inv_mass.get(i) + gravity.y * gravity.scale;
+        const vel_x = velocity_x.get(i) + acceleration_x * deltaTime;
+        const vel_y = velocity_y.get(i) + acceleration_y * deltaTime;
+        velocity_x.set(i, vel_x);
+        velocity_y.set(i, vel_y);
+
+        position_x.inc(i, vel_x * deltaTime);
+        position_y.inc(i, vel_y * deltaTime);
+
+        const angular_acceleration = torque.get(i) * inv_inertia.get(i);
+        const ang_vel = angular_velocity.get(i) + angular_acceleration * deltaTime;
+        angular_velocity.inc(i, angular_acceleration * deltaTime);
+
+        rotation.inc(i, ang_vel * deltaTime);
+      }
+    };
+  };
+
+  const dynamic_collisions = [];
+  const static_collisions = [];
+  this.Collide = function() {
+    this.query = [
+      "radius",
+      "velocity_x",
+      "velocity_y",
+      "position_x",
+      "position_y",
+      "inv_mass",
+      "angular_velocity",
+      "inv_inertia",
+    ];
+    this.update = function(time, entities) {
+      for (let i = 0; i < 10; i++) {
+        dynamic_collisions.length = 0;
+        static_collisions.length = 0;
+        collect_collisions(entities, dynamic_collisions, static_collisions);
+        solve_collisions(entities, dynamic_collisions, static_collisions);
+      }
+    };
+  };
+
+  const collect_collisions = function(entities, dynamic_collisions, static_collisions) {
+    const position_x = entities["position_x"];
+    const position_y = entities["position_y"];
+    const radius = entities["radius"];
+
+    for (let i = 0; i < entities.count; i++) {
+      const pos_ax = position_x.get(i);
+      const pos_ay = position_y.get(i);
+      const radius_a = radius.get(i);
+      for (let k = i + 1; k < entities.count; k++) {
+        const pos_bx = position_x.get(k);
+        const pos_by = position_y.get(k);
+        const radius_b = radius.get(k);
+        const dx = pos_ax - pos_bx;
+        const dy = pos_ay - pos_by;
+
+        const dist_sq = dx * dx + dy * dy;
+        const radius_sum = radius_a + radius_b;
+        const radius_sum_sq = radius_sum * radius_sum;
+
+        if (dist_sq <= radius_sum_sq) {
+          const dist = Math.sqrt(dist_sq);
+
+          let normal_x;
+          let normal_y;
+          let depth;
+          if (dist > 0) {
+            normal_x = dx / dist;
+            normal_y = dy / dist;
+            depth = radius_sum - dist;
+          } else {
+            normal_x = 0;
+            normal_y = 1;
+            depth = Math.max(radius_a, radius_b);
+          }
+
+          dynamic_collisions.push({
+            a: i,
+            b: k,
+            contact_x: pos_ax - normal_x * (radius_a - depth / 2),
+            contact_y: pos_ay - normal_y * (radius_a - depth / 2),
+            normal_x: normal_x,
+            normal_y: normal_y,
+            tangent_x: -normal_y,
+            tangent_y: normal_x,
+            depth: depth,
+          });
+        }
+      }
+
+      if (pos_ax - radius_a <= worldBounds.minx) {
+        static_collisions.push({
+          a: i,
+          contact_x: worldBounds.minx,
+          contact_y: pos_ay,
+          normal_x: 1,
+          normal_y: 0,
+          depth: worldBounds.minx + radius_a - pos_ax,
+        });
+      }
+
+      if (pos_ax + radius_a >= worldBounds.maxx) {
+        static_collisions.push({
+          a: i,
+          contact_x: worldBounds.maxx,
+          contact_y: pos_ay,
+          normal_x: -1,
+          normal_y: 0,
+          depth: radius_a - (worldBounds.maxx - pos_ax),
+        });
+      }
+
+      if (pos_ay - radius_a <= worldBounds.miny) {
+        static_collisions.push({
+          a: i,
+          contact_x: pos_ax,
+          contact_y: worldBounds.miny,
+          normal_x: 0,
+          normal_y: 1,
+          depth: worldBounds.miny + radius_a - pos_ay,
+        });
+      }
+
+      if (pos_ay + radius_a >= worldBounds.maxy) {
+        static_collisions.push({
+          a: i,
+          contact_x: pos_ax,
+          contact_y: worldBounds.maxy,
+          normal_x: 0,
+          normal_y: -1,
+          depth: radius_a - (worldBounds.maxy - pos_ay),
+        });
+      }
+    }
+  };
+
+  const solve_collisions = function(entities, dynamic_collisions, static_collisions) {
+    const position_x = entities["position_x"];
+    const position_y = entities["position_y"];
+    const velocity_x = entities["velocity_x"];
+    const velocity_y = entities["velocity_y"];
+    const inv_mass = entities["inv_mass"];
+    const angular_velocity = entities["angular_velocity"];
+    const inv_inertia = entities["inv_inertia"];
+
+    // separate bodies
+    {
+      dynamic_collisions.forEach(collision => {
+        const { a, b, normal_x, normal_y, depth } = collision;
+
+        const halfDepth = depth * 0.5;
+        position_x.set(a, position_x.get(a) + normal_x * halfDepth);
+        position_y.set(a, position_y.get(a) + normal_y * halfDepth);
+
+        position_x.set(b, position_x.get(b) - normal_x * halfDepth);
+        position_y.set(b, position_y.get(b) - normal_y * halfDepth);
+      });
+      static_collisions.forEach(collision => {
+        const { a, normal_x, normal_y, depth } = collision;
+
+        position_x.inc(a, normal_x * depth);
+        position_y.inc(a, normal_y * depth);
+      });
+    }
+
+    // solve collisions with friction
+    {
+      const static_friction = 0.4;
+      const kinetic_friction = 0.2;
+      dynamic_collisions.forEach(collision => {
+        const { a, b, contact_x, contact_y, normal_x, normal_y } = collision;
+        const ra_x = contact_x - position_x.get(a);
+        const ra_y = contact_y - position_y.get(a);
+        const rb_x = contact_x - position_x.get(b);
+        const rb_y = contact_y - position_y.get(b);
+
+        const rPerp_a_x = -ra_y;
+        const rPerp_a_y = ra_x;
+        const rPerp_b_x = -rb_y;
+        const rPerp_b_y = rb_x;
+
+        const vel_a_x = velocity_x.get(a);
+        const vel_a_y = velocity_y.get(a);
+        const vel_b_x = velocity_x.get(b);
+        const vel_b_y = velocity_y.get(b);
+        const ang_vel_a = angular_velocity.get(a);
+        const ang_vel_b = angular_velocity.get(b);
+
+        const tangential_velocity_a_x = rPerp_a_x * ang_vel_a;
+        const tangential_velocity_a_y = rPerp_a_y * ang_vel_a;
+        const tangential_velocity_b_x = rPerp_b_x * ang_vel_b;
+        const tangential_velocity_b_y = rPerp_b_y * ang_vel_b;
+
+        const relative_velocity_x = (vel_a_x + tangential_velocity_a_x)
+          - (vel_b_x + tangential_velocity_b_x);
+        const relative_velocity_y = (vel_a_y + tangential_velocity_a_y)
+          - (vel_b_y + tangential_velocity_b_y);
+
+        const relVelDotNormal = dot(relative_velocity_x, relative_velocity_y, normal_x, normal_y);
+        if (relVelDotNormal > 0) {
+          return;
+        }
+
+        const restitution = 0.1;
+
+        const inv_mass_a = inv_mass.get(a);
+        const inv_mass_b = inv_mass.get(b);
+        const inv_inertia_a = inv_inertia.get(a);
+        const inv_inertia_b = inv_inertia.get(b);
+
+        const inv_mass_sum = inv_mass_a + inv_mass_b;
+
+        const rPerpDotNormal_a = dot(rPerp_a_x, rPerp_a_y, normal_x, normal_y);
+        const rPerpDotNormal_b = dot(rPerp_b_x, rPerp_b_y, normal_x, normal_y);
+        const inv_inertia_sum = inv_inertia_a * rPerpDotNormal_a * rPerpDotNormal_a
+          + inv_inertia_b * rPerpDotNormal_b * rPerpDotNormal_b;
+
+        const impulse_normal = -(1 + restitution) * relVelDotNormal
+          / (inv_mass_sum + inv_inertia_sum);
+        collision.impulse_normal = impulse_normal;
+
+        const impulse_normal_x = impulse_normal * normal_x;
+        const impulse_normal_y = impulse_normal * normal_y;
+
+        velocity_x.inc(a, impulse_normal_x * inv_mass_a);
+        velocity_y.inc(a, impulse_normal_y * inv_mass_a);
+        angular_velocity.inc(a, cross(ra_x, ra_y, impulse_normal_x, impulse_normal_y) * inv_inertia_a);
+
+        velocity_x.inc(b, -impulse_normal_x * inv_mass_b);
+        velocity_y.inc(b, -impulse_normal_y * inv_mass_b);
+        angular_velocity.inc(b, -cross(rb_x, rb_y, impulse_normal_x, impulse_normal_y) * inv_inertia_b);
+      });
+      static_collisions.forEach(collision => {
+        const { a, contact_x, contact_y, normal_x, normal_y } = collision;
+
+        const ra_x = contact_x - position_x.get(a);
+        const ra_y = contact_y - position_y.get(a);
+
+        const rPerp_a_x = -ra_y;
+        const rPerp_a_y = ra_x;
+
+        const vel_a_x = velocity_x.get(a);
+        const vel_a_y = velocity_y.get(a);
+        const ang_vel_a = angular_velocity.get(a);
+
+        const tangential_velocity_a_x = ang_vel_a * rPerp_a_x;
+        const tangential_velocity_a_y = ang_vel_a * rPerp_a_y;
+
+        const relative_velocity_x = (vel_a_x + tangential_velocity_a_x);
+        const relative_velocity_y = (vel_a_y + tangential_velocity_a_y);
+
+        const relVelDotNormal = dot(relative_velocity_x, relative_velocity_y, normal_x, normal_y);
+        if (relVelDotNormal > 0) {
+          return;
+        }
+
+        const restitution = 0.1;
+
+        const inv_mass_a = inv_mass.get(a);
+        const inv_inertia_a = inv_inertia.get(a);
+
+        const inv_mass_sum = inv_mass_a;
+
+        const rPerpDotNormal_a = dot(rPerp_a_x, rPerp_a_y, normal_x, normal_y);
+        const inv_inertia_sum = inv_inertia_a * rPerpDotNormal_a * rPerpDotNormal_a;
+
+        const impulse_normal = -(1 + restitution) * relVelDotNormal
+          / (inv_mass_sum + inv_inertia_sum);
+        collision.impulse_normal = impulse_normal;
+
+        const impulse_normal_x = impulse_normal * normal_x;
+        const impulse_normal_y = impulse_normal * normal_y;
+
+        velocity_x.inc(a, impulse_normal_x * inv_mass_a);
+        velocity_y.inc(a, impulse_normal_y * inv_mass_a);
+        angular_velocity.inc(a, cross(ra_x, ra_y, impulse_normal_x, impulse_normal_y) * inv_inertia_a);
+      });
+
+      dynamic_collisions.forEach(collision => {
+        const { a, b, contact_x, contact_y, normal_x, normal_y, depth, impulse_normal = 0 } = collision;
+        const ra_x = contact_x - position_x.get(a);
+        const ra_y = contact_y - position_y.get(a);
+        const rb_x = contact_x - position_x.get(b);
+        const rb_y = contact_y - position_y.get(b);
+
+        const rPerp_a_x = -ra_y;
+        const rPerp_a_y = ra_x;
+        const rPerp_b_x = -rb_y;
+        const rPerp_b_y = rb_x;
+
+        const vel_a_x = velocity_x.get(a);
+        const vel_a_y = velocity_y.get(a);
+        const vel_b_x = velocity_x.get(b);
+        const vel_b_y = velocity_y.get(b);
+        const ang_vel_a = angular_velocity.get(a);
+        const ang_vel_b = angular_velocity.get(b);
+
+        const tangential_velocity_a_x = rPerp_a_x * ang_vel_a;
+        const tangential_velocity_a_y = rPerp_a_y * ang_vel_a;
+        const tangential_velocity_b_x = rPerp_b_x * ang_vel_b;
+        const tangential_velocity_b_y = rPerp_b_y * ang_vel_b;
+
+        const relative_velocity_x = (vel_a_x + tangential_velocity_a_x)
+          - (vel_b_x + tangential_velocity_b_x);
+        const relative_velocity_y = (vel_a_y + tangential_velocity_a_y)
+          - (vel_b_y + tangential_velocity_b_y);
+
+        let tangent_x;
+        let tangent_y;
+        if (relative_velocity_x === 0 && relative_velocity_y === 0) {
+          tangent_x = -normal_y;
+          tangent_y = normal_x;
+        } else {
+          const relative_speed = magnitude(relative_velocity_x, relative_velocity_y);
+          tangent_x = -relative_velocity_y / relative_speed;
+          tangent_y = relative_velocity_x / relative_speed;
+        }
+
+        const inv_mass_a = inv_mass.get(a);
+        const inv_mass_b = inv_mass.get(b);
+        const inv_inertia_a = inv_inertia.get(a);
+        const inv_inertia_b = inv_inertia.get(b);
+
+        const inv_mass_sum = inv_mass_a + inv_mass_b;
+
+        const rPerpDotTangent_a = dot(rPerp_a_x, rPerp_a_y, tangent_x, tangent_y);
+        const rPerpDotTangent_b = dot(rPerp_b_x, rPerp_b_y, tangent_x, tangent_y);
+        const inv_inertia_sum = inv_inertia_a * rPerpDotTangent_a * rPerpDotTangent_a
+          + inv_inertia_b * rPerpDotTangent_b * rPerpDotTangent_b;
+
+        let impulse_tangent = -dot(relative_velocity_x, relative_velocity_y, tangent_x, tangent_y) / (inv_mass_sum + inv_inertia_sum);
+
+        if (Math.abs(impulse_tangent) > impulse_normal * static_friction) {
+          impulse_tangent = -impulse_normal * kinetic_friction;
+        }
+
+        const impulse_tangent_x = impulse_tangent * tangent_x;
+        const impulse_tangent_y = impulse_tangent * tangent_y;
+
+        velocity_x.inc(a, -impulse_tangent_x * inv_mass_a);
+        velocity_y.inc(a, -impulse_tangent_y * inv_mass_a);
+        angular_velocity.inc(a, -cross(ra_x, ra_y, impulse_tangent_x, impulse_tangent_y) * inv_inertia_a);
+
+        velocity_x.inc(b, impulse_tangent_x * inv_mass_b);
+        velocity_y.inc(b, impulse_tangent_y * inv_mass_b);
+        angular_velocity.inc(b, cross(rb_x, rb_y, impulse_tangent_x, impulse_tangent_y) * inv_inertia_b);
+      });
+      static_collisions.forEach(collision => {
+        const { a, contact_x, contact_y, normal_x, normal_y, impulse_normal = 0 } = collision;
+        const ra_x = contact_x - position_x.get(a);
+        const ra_y = contact_y - position_y.get(a);
+
+        const rPerp_a_x = -ra_y;
+        const rPerp_a_y = ra_x;
+
+        const vel_a_x = velocity_x.get(a);
+        const vel_a_y = velocity_y.get(a);
+        const ang_vel_a = angular_velocity.get(a);
+
+        const tangential_velocity_a_x = rPerp_a_x * ang_vel_a;
+        const tangential_velocity_a_y = rPerp_a_y * ang_vel_a;
+
+        const relative_velocity_x = (vel_a_x + tangential_velocity_a_x);
+        const relative_velocity_y = (vel_a_y + tangential_velocity_a_y);
+
+        const tangent_x = -normal_y;
+        const tangent_y = normal_x;
+
+        const inv_mass_a = inv_mass.get(a);
+        const inv_inertia_a = inv_inertia.get(a);
+
+        const inv_mass_sum = inv_mass_a;
+
+        const rPerpDotTangent_a = dot(rPerp_a_x, rPerp_a_y, tangent_x, tangent_y);
+        const inv_inertia_sum = inv_inertia_a * rPerpDotTangent_a * rPerpDotTangent_a;
+
+        let impulse_tangent = -dot(relative_velocity_x, relative_velocity_y, tangent_x, tangent_y) / (inv_mass_sum + inv_inertia_sum);
+
+        if (Math.abs(impulse_tangent) > impulse_normal * static_friction) {
+          impulse_tangent = -impulse_normal * kinetic_friction;
+        }
+
+        const impulse_tangent_x = impulse_tangent * tangent_x;
+        const impulse_tangent_y = impulse_tangent * tangent_y;
+
+        console.log(
+          `(${(impulse_normal * normal_x).toFixed(5)}, ${(impulse_normal * normal_y).toFixed(5)})`,
+          `(${(impulse_tangent_x).toFixed(5)}, ${(impulse_tangent_y).toFixed(5)})`,
+        );
+        velocity_x.inc(a, impulse_tangent_x * inv_mass_a);
+        velocity_y.inc(a, impulse_tangent_y * inv_mass_a);
+        angular_velocity.inc(a, cross(ra_x, ra_y, impulse_tangent_x, impulse_tangent_y) * inv_inertia_a);
+      });
+    }
+  };
+}
