@@ -9,10 +9,10 @@ import PhysicsWorld from "./Systems/PhysicsWorld.js";
 import DrawCats from "./Systems/DrawCats.js";
 import DrawParticles from "./Systems/DrawParticles.js";
 import MergeCats from "./Systems/MergeCats.js";
-import DrawTimeUI from "./Systems/DrawTimeUI.js";
+// import DrawTimeUI from "./Systems/DrawTimeUI.js";
 import DrawScoreUI from "./Systems/DrawScoreUI.js";
 import ClearCanvas from "./Systems/ClearCanvas.js";
-import DebugPhysics from "./Systems/DebugPhysics.js";
+// import DebugPhysics from "./Systems/DebugPhysics.js";
 import DestroyAtEndOfDuration from "./Systems/DestroyAtEndOfDuration.js";
 import spawnParticles from "./Utils/spawnParticles.js";
 import playPopSfx from "./Utils/playPopSfx.js";
@@ -27,7 +27,6 @@ import SetLoss from "./Systems/SetLoss.js";
 import SystemGroup from "./Core/SystemGroup.js";
 import PopCats from "./Systems/PopCats.js";
 import DrawLossScreenUI from "./Systems/DrawLossScreenUI.js";
-import { clamp, lerp } from "./Utils/math.js";
 
 export default function Game({
   backgroundCanvas,

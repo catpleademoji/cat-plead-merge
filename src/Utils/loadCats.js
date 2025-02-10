@@ -5,7 +5,7 @@ import { SCREEN_TO_WORLD } from "./screen.js";
 export default async function loadCats() {
   const loadImagePromises = config.cats.map(async (cat, index) => {
     const image = new Image();
-    image.src = `./assets/images/cats/${cat.name}.svg`;
+    image.src = `/assets/images/cats/${cat.name}.svg`;
 
     await image.decode();
 

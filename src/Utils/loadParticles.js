@@ -7,7 +7,7 @@ export default async function loadParticles() {
   const theme = config.themes[themeIndex];
   const loadImagesPromise = config.particles.map(async (particle, index) => {
     const image = new Image();
-    image.src = `./assets/images/particles/${particle.name}.svg`;
+    image.src = `/assets/images/particles/${particle.name}.svg`;
 
     await image.decode();
 

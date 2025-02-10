@@ -1,9 +1,14 @@
 import config from "../config.js";
 
+/**
+ * 
+ * @param {AudioContext} audioContext 
+ * @returns 
+ */
 export default async function loadSoundEffects(audioContext) {
   const loadAudioPromises = config.soundEffects.map(async (sound) => {
     const audioBuffers = await Promise.all(sound.variants.map(async variant => {
-      const audio = await fetch(`./assets/audio/${variant}.txt`);
+      const audio = await fetch(`/assets/audio/${variant}.txt`);
       // const audioData = await audio.arrayBuffer();
       const audioBase64Data = await audio.text();
 
