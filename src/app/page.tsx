@@ -4,7 +4,6 @@ import { initBuffers } from "@/webgl/initBuffers";
 import { initShaderProgram, loadTexture } from "@/webgl/shaderUtils";
 import { ProgramInfo } from "../webgl/ProgramInfo";
 
-let cubeRotation = 0.0;
 let deltaTime = 0;
 
 export default function Home() {
@@ -79,8 +78,7 @@ export default function Home() {
       deltaTime = now - then;
       then = now;
 
-      drawScene(gl!, programInfo, buffers, texture, cubeRotation);
-      cubeRotation += deltaTime;
+      drawScene(gl!, programInfo, buffers, texture);
 
       requestAnimationFrame(render);
     }
