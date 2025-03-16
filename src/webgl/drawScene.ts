@@ -1,7 +1,7 @@
 import { mat4 } from "gl-matrix";
 import { ProgramBuffers, ProgramInfo } from "./ProgramInfo";
 
-function drawScene(gl: WebGL2RenderingContext, programInfo: ProgramInfo, buffers: ProgramBuffers, texture: WebGLTexture, cubeRotation: number) {
+function drawScene(gl: WebGL2RenderingContext, programInfo: ProgramInfo, buffers: ProgramBuffers, texture: WebGLTexture) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
     // gl.enable(gl.DEPTH_TEST); // Enable depth testing
