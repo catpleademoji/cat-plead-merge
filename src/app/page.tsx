@@ -3,6 +3,7 @@ import { drawScene } from "@/webgl/drawScene";
 import { initBuffers } from "@/webgl/initBuffers";
 import { initShaderProgram, loadTexture } from "@/webgl/shaderUtils";
 import { ProgramInfo } from "../webgl/ProgramInfo";
+import { Fragment, Vertex } from "@/webgl/ShaderSource";
 
 let deltaTime = 0;
 
@@ -22,32 +23,7 @@ export default function Home() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    const vsSource = `
-  attribute vec4 aVertexPosition;
-  attribute vec2 aTextureCoord;
-
-  uniform mat4 uModelViewMatrix;
-  uniform mat4 uProjectionMatrix;
-
-  varying highp vec2 vTextureCoord;
-
-  void main(void) {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-    vTextureCoord = aTextureCoord;
-  }
-`;
-
-    const fsSource = `
-  varying highp vec2 vTextureCoord;
-
-  uniform sampler2D uSampler;
-
-  void main(void) {
-    gl_FragColor = texture2D(uSampler, vTextureCoord);
-  }
-`;
-
-    const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+    const shaderProgram = initShaderProgram(gl, Vertex, Fragment);
 
     const programInfo: ProgramInfo = {
       program: shaderProgram,
