@@ -1,17 +1,24 @@
-import { ProgramBuffers } from "./ProgramInfo";
+import { ProgramBuffers, ProgramInfo } from "./ProgramInfo";
 
-function initBuffers(gl: WebGL2RenderingContext): ProgramBuffers {
+function initBuffers(gl: WebGL2RenderingContext, programInfo: ProgramInfo): WebGLVertexArrayObject {
+    const vao = gl.createVertexArray();
+
+    gl.enableVertexAttribArray(programInfo.attribLocations.position);
     const positionBuffer = initPositionBuffer(gl);
+    setPositionAttribute(gl, programInfo);
 
+    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
     const textureCoordBuffer = initTextureBuffer(gl);
+    setTextureAttribute(gl, programInfo);
 
-    const indexBuffer = initIndexBuffer(gl);
+    // const indexBuffer = initIndexBuffer(gl);
 
-    return {
-        position: positionBuffer,
-        textureCoord: textureCoordBuffer,
-        indices: indexBuffer,
-    };
+    return vao;
+    // return {
+    //     position: positionBuffer,
+    //     textureCoord: textureCoordBuffer,
+    //     indices: indexBuffer,
+    // };
 }
 
 function initPositionBuffer(gl: WebGL2RenderingContext) {
@@ -20,33 +27,15 @@ function initPositionBuffer(gl: WebGL2RenderingContext) {
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
     const positions = [
-        -1.0, -1.0, +1.0,
-        +1.0, -1.0, +1.0,
-        +1.0, +1.0, +1.0,
-        -1.0, +1.0, +1.0,
+        -1.0, -1.0,
+        +1.0, -1.0,
+        +1.0, +1.0,
+        -1.0, +1.0,
     ];
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
     return positionBuffer;
-}
-
-function initIndexBuffer(gl: WebGL2RenderingContext) {
-    const indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-    const indices = [
-        0, 1, 2,
-        0, 2, 3,
-    ];
-
-    gl.bufferData(
-        gl.ELEMENT_ARRAY_BUFFER,
-        new Uint16Array(indices),
-        gl.STATIC_DRAW
-    );
-
-    return indexBuffer;
 }
 
 function initTextureBuffer(gl: WebGL2RenderingContext) {
@@ -60,6 +49,38 @@ function initTextureBuffer(gl: WebGL2RenderingContext) {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
 
     return textureCoordBuffer;
+}
+
+function setPositionAttribute(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
+    const numComponents = 2;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.position,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset
+    );
+}
+
+function setTextureAttribute(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
+    const num = 2;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.textureCoord,
+        num,
+        type,
+        normalize,
+        stride,
+        offset
+    );
 }
 
 export { initBuffers };

@@ -1,5 +1,5 @@
-type Attributes = "vertexPosition" | "textureCoord";
-type Uniforms = "projectionMatrix" | "modelViewMatrix" | "uSampler";
+type Attributes = "position" | "textureCoord";
+type Uniforms = "matrix" | "texSampler";
 type Buffers = "position" | "textureCoord" | "indices";
 
 export type ProgramInfo = {

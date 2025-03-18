@@ -1,14 +1,13 @@
 export const Vertex = `
-    attribute vec4 aVertexPosition;
+    attribute vec2 aPosition;
     attribute vec2 aTextureCoord;
 
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
+    uniform mat3 uMatrix;
 
     varying highp vec2 vTextureCoord;
 
     void main(void) {
-        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+        gl_Position = vec4((uMatrix * vec3(aPosition, 1)).xy, 0, 1);
         vTextureCoord = aTextureCoord;
     }
 `;
