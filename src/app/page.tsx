@@ -31,44 +31,7 @@ export default function Home() {
     // const vertexArrayObject = initBuffers(gl, programInfo);
 
     // Create a vertex array object (attribute state)
-    var vao = gl.createVertexArray();
-
-    // Create a buffer
-    var positionBuffer = gl.createBuffer();
-
-    // and make it the one we're currently working with
-    gl.bindVertexArray(vao);
-
-    gl.enableVertexAttribArray(programInfo.attribLocations.position);
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    setGeometry(gl);
-
-    // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-    var size = 2;          // 3 components per iteration
-    var type = gl.FLOAT;   // the data is 32bit floats
-    var normalize = false; // don't normalize the data
-    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-    var offset = 0;        // start at the beginning of the buffer
-    gl.vertexAttribPointer(
-      programInfo.attribLocations.position, size, type, normalize, stride, offset);
-
-    // create the texcoord buffer, make it the current ARRAY_BUFFER
-    // and copy in the texcoord values
-    var texcoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-    setTexcoords(gl);
-
-    // Turn on the attribute
-    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-
-    // Tell the attribute how to get data out of texcoordBuffer (ARRAY_BUFFER)
-    var size = 2;          // 2 components per iteration
-    var type = gl.FLOAT;   // the data is 32bit floating point values
-    var normalize = true;  // convert from 0-255 to 0.0-1.0
-    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next color
-    var offset = 0;        // start at the beginning of the buffer
-    gl.vertexAttribPointer(
-      programInfo.attribLocations.textureCoord, size, type, normalize, stride, offset);
+    const vao = initBuffers(gl, programInfo);
 
     // use texture unit 0
     gl.activeTexture(gl.TEXTURE0 + 0);
@@ -119,33 +82,4 @@ export default function Home() {
       <canvas id="game-canvas" ref={getCanvasRef}></canvas>
     </>
   );
-}
-
-function setGeometry(gl: WebGL2RenderingContext) {
-  var positions = new Float32Array([
-    -0.5, +0.5,
-    +0.5, +0.5,
-    -0.5, -0.5,
-    -0.5, -0.5,
-    +0.5, +0.5,
-    +0.5, -0.5,
-  ]);
-
-  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-}
-
-// Fill the current ARRAY_BUFFER buffer
-// with texture coordinates for a plane
-function setTexcoords(gl: WebGL2RenderingContext) {
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([
-      0, 0,
-      1, 0,
-      0, 1,
-      0, 1,
-      1, 0,
-      1, 1,
-    ]),
-    gl.STATIC_DRAW);
 }

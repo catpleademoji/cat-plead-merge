@@ -1,86 +1,61 @@
-import { ProgramBuffers, ProgramInfo } from "./ProgramInfo";
+import { ProgramInfo } from "./ProgramInfo";
 
-function initBuffers(gl: WebGL2RenderingContext, programInfo: ProgramInfo): WebGLVertexArrayObject {
+export function initBuffers(gl: WebGL2RenderingContext, programInfo: ProgramInfo): WebGLVertexArrayObject {
     const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
 
-    gl.enableVertexAttribArray(programInfo.attribLocations.position);
-    const positionBuffer = initPositionBuffer(gl);
-    setPositionAttribute(gl, programInfo);
-
-    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-    const textureCoordBuffer = initTextureBuffer(gl);
-    setTextureAttribute(gl, programInfo);
-
-    // const indexBuffer = initIndexBuffer(gl);
+    initPositionBuffer(gl, programInfo);
+    initTextureBuffer(gl, programInfo);
 
     return vao;
-    // return {
-    //     position: positionBuffer,
-    //     textureCoord: textureCoordBuffer,
-    //     indices: indexBuffer,
-    // };
 }
 
-function initPositionBuffer(gl: WebGL2RenderingContext) {
+function initTextureBuffer(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
+    const texcoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+
+    const texCoords = [
+        0, 0,
+        1, 0,
+        0, 1,
+        0, 1,
+        1, 0,
+        1, 1,
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
+
+    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+
+    const size = 2;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.vertexAttribPointer(programInfo.attribLocations.textureCoord,
+        size, type, normalize, stride, offset);
+}
+
+function initPositionBuffer(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
     const positionBuffer = gl.createBuffer();
 
+    gl.enableVertexAttribArray(programInfo.attribLocations.position);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
     const positions = [
-        -1.0, -1.0,
-        +1.0, -1.0,
-        +1.0, +1.0,
-        -1.0, +1.0,
+        -0.5, +0.5,
+        +0.5, +0.5,
+        -0.5, -0.5,
+        -0.5, -0.5,
+        +0.5, +0.5,
+        +0.5, -0.5,
     ];
-
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-    return positionBuffer;
-}
-
-function initTextureBuffer(gl: WebGL2RenderingContext) {
-    const textureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
-
-    const textureCoordinates = [
-        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
-    ];
-
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
-
-    return textureCoordBuffer;
-}
-
-function setPositionAttribute(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
-    const numComponents = 2;
+    const size = 2;
     const type = gl.FLOAT;
     const normalize = false;
     const stride = 0;
     const offset = 0;
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.position,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset
-    );
+    gl.vertexAttribPointer(programInfo.attribLocations.position,
+        size, type, normalize, stride, offset);
 }
-
-function setTextureAttribute(gl: WebGL2RenderingContext, programInfo: ProgramInfo) {
-    const num = 2;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.textureCoord,
-        num,
-        type,
-        normalize,
-        stride,
-        offset
-    );
-}
-
-export { initBuffers };
