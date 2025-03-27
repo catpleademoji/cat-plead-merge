@@ -1,4 +1,4 @@
-export const Vertex = `
+export const VertexShaderSource = `
     attribute vec2 aPosition;
     attribute vec2 aTextureCoord;
 
@@ -12,7 +12,7 @@ export const Vertex = `
     }
 `;
 
-export const Fragment = `
+export const FragmentShaderSource = `
     varying highp vec2 vTextureCoord;
 
     uniform sampler2D uSampler;
