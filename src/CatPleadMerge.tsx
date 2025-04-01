@@ -18,7 +18,6 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
   const engine = useRef<Engine>(new Engine());
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const animationId = useRef<number>(null);
 
   useAudioContext((audioContext) => {
     engine.current.addResource("audioContext", audioContext);
@@ -105,27 +104,19 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
     initWebgl(gl);
   }, []);
 
-  function play() {
-      engine.current.run();
-      function update(timestamp: DOMHighResTimeStamp) {
-
-      engine.current.update(timestamp);
-      animationId.current = requestAnimationFrame(update);
-    }
-    animationId.current = requestAnimationFrame(update);
-  }
-
   useEffect(() => {
     if (!isPlaying) {
-      if (animationId.current !== null) {
-        cancelAnimationFrame(animationId.current);
-      }
+      engine.current.stop();
       return;
     }
-    play();
+    engine.current.run();
   }, [isPlaying]);
 
   useEffect(() => {
+    engine.current.addResource("gravity", {
+      x: 0,
+      y: 9.81
+    });
     addSystems(engine.current);
   }, []);
 

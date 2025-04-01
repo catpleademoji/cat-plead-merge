@@ -1,6 +1,8 @@
+import { Vector2 } from "@/types/Vector2";
 import { matrix3x3 } from "@/webgl/matrix3x3";
 import { ProgramInfo } from "@/webgl/ProgramInfo";
 import { QueryResult, System } from "cat-plead-engine";
+import { Position, Sprite } from "../components";
 
 export const RenderSystem: System = {
     query: {
@@ -9,8 +11,8 @@ export const RenderSystem: System = {
             "material",
         ],
         all: [
-            "position",
-            "sprite",
+            Position,
+            Sprite,
         ]
     },
     run(queryResult: QueryResult) {
@@ -37,8 +39,8 @@ export const RenderSystem: System = {
         const matrix = matrix3x3.identity();
 
         queryResult.entities.foreach((components) => {
-            const position = components["position"] as { x: number, y: number };
-            const texture = components["sprite"] as WebGLTexture;
+            const position = components[Position] as Vector2;
+            const texture = components[Sprite] as WebGLTexture;
             matrix3x3.translate(matrix, projection, position.x, position.y);
             matrix3x3.rotate(matrix, matrix, 0);
             matrix3x3.scale(matrix, matrix, 150 / 4, 150 / 4);

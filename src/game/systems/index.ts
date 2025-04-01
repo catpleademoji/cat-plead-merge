@@ -1,6 +1,8 @@
 import { Cat } from "@/types/Cat";
 import { Commands, Engine, QueryResult, Schedule, System } from "cat-plead-engine";
 import { RenderSystem } from "./RenderSystem";
+import { IntegrateMotion } from "./physics/IntegrateMotionSystem";
+import { AngularVelocity, Position, Rotation, Sprite, Velocity } from "../components";
 
 const logSystem = {
   run() {
@@ -27,22 +29,26 @@ const SpawnEntitiesSystem: System = {
     for (let i = 0; i < 50; i++) {
       const angle = Math.random() * 2 * Math.PI;
       commands.spawnFromComponents({
-        "position": {
+        [Position]: {
           x: Math.random() * width,
           y: Math.random() * height,
         },
-        "velocity": {
+        [Velocity]: {
           x: Math.cos(angle),
           y: Math.sin(angle),
         },
-        "sprite": cats[Math.floor(Math.random() * cats.length)].texture,
+        [Sprite]: cats[Math.floor(Math.random() * cats.length)].texture,
+        [Rotation]: Math.random() * 2 * Math.PI,
+        [AngularVelocity]: 0
       });
     }
   }
 }
 
 export function addSystems(engine: Engine) {
-  engine.addSystem(Schedule.Update, logSystem)
+  engine
+    // .addSystem(Schedule.Update, logSystem)
     .addSystem(Schedule.Start, SpawnEntitiesSystem)
-    .addSystem(Schedule.Update, RenderSystem);
+    .addSystem(Schedule.Update, RenderSystem)
+    .addSystem(Schedule.Update, IntegrateMotion);
 }
