@@ -1,17 +1,14 @@
 import { AngularVelocity, Position, Rotation, Velocity } from "@/game/components";
-import { Vector2 } from "@/types/Vector2";
+import { PhysicsSettings as PhysicsSettingsRes, Time as TimeRes } from "@/game/resources";
+import { PhysicsSettings } from "@/game/types/PhysicsSettings";
+import { Vector2 } from "@/game/types/Vector2";
 import { QueryResult, System, Time } from "cat-plead-engine";
-
-type Gravity = {
-    x: number;
-    y: number;
-}
 
 export const IntegrateMotion: System = {
     query: {
         resources: [
-            "time",
-            "gravity",
+            TimeRes,
+            PhysicsSettingsRes,
         ],
         all: [
             Position,
@@ -21,12 +18,12 @@ export const IntegrateMotion: System = {
         ]
     },
     run(queryResult: QueryResult) {
-        const time = queryResult.resources.get<Time>("time")!;
-        const gravity = queryResult.resources.get<Gravity>("gravity")!;
+        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const physicsSettings = queryResult.resources.get<PhysicsSettings>(PhysicsSettingsRes)!;
 
         const velFromGravity = {
-            x: gravity.x * time.delta,
-            y: gravity.y * time.delta,
+            x: physicsSettings.gravity.x * time.delta,
+            y: physicsSettings.gravity.y * time.delta,
         };
         queryResult.entities.foreach((components) => {
             const velocity = components["velocity"] as Vector2;

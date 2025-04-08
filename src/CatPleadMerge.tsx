@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AssetManifest } from "./assets/AssetManifest";
 import { useAudioContext } from "./hooks/useAudioContext";
-import { initShaderProgram } from "./webgl/shaderUtils";
-import { VertexShaderSource, FragmentShaderSource } from "./webgl/ShaderSource";
-import { ProgramInfo } from "./webgl/ProgramInfo";
-import { initBuffers } from "./webgl/initBuffers";
-import { loadCats, loadParticles, loadSoundEffects } from "./assets/loadAssets";
+import { loadSoundEffects } from "./assets/loadAssets";
 import { Engine } from "cat-plead-engine";
 import { addSystems } from "./game/systems";
+import { AudioContext, SoundEffectAssets } from "./game/resources";
+import { addPhysicsResources } from "./game/resources/addPhysicsResources";
+import { addWebglResources } from "./game/resources/addWebglResources";
 
 export type CatPleadMergeProps = {
   id: string;
@@ -20,72 +19,12 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useAudioContext((audioContext) => {
-    engine.current.addResource("audioContext", audioContext);
+    engine.current.addResource(AudioContext, audioContext);
     loadSoundEffects(assets.soundEffects, audioContext)
       .then(_soundEffects => {
-        engine.current.addResource("soundEffects", _soundEffects);
-        // soundEffects.current = _soundEffects;
-        // const source = audioContext.createBufferSource();
-        // const variant = _soundEffects[0].variants[0];
-        // source.buffer = variant.audio;
-        // source.connect(audioContext.destination);
-        // source.start();
+        engine.current.addResource(SoundEffectAssets, _soundEffects);
       });
   });
-
-  function initWebgl(gl: WebGL2RenderingContext) {
-    engine.current.addResource("webgl", gl);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    const shaderProgram = initShaderProgram(gl, VertexShaderSource, FragmentShaderSource);
-
-    const programInfo: ProgramInfo = {
-      program: shaderProgram,
-      attribLocations: {
-        position: gl.getAttribLocation(shaderProgram, "aPosition"),
-        textureCoord: gl.getAttribLocation(shaderProgram, "aTextureCoord"),
-      },
-      uniformLocations: {
-        matrix: gl.getUniformLocation(shaderProgram, "uMatrix"),
-        texSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
-      },
-    };
-
-    const vao = initBuffers(gl, programInfo);
-
-    loadCats(assets.cats, gl).then(cats => {
-      engine.current.addResource("cats", cats);
-      // entities.current = Array.from({ length: 50 }, () => {
-      //   const angle = Math.random() * Math.PI * 2;
-      //   const index = Math.floor(Math.random() * catImages.current!.length);
-
-      //   return {
-      //     position: {
-      //       x: Math.random() * glContext.current!.canvas.width,
-      //       y: Math.random() * glContext.current!.canvas.height,
-      //     },
-      //     direction: {
-      //       x: Math.cos(angle),
-      //       y: Math.sin(angle),
-      //     },
-      //     speed: Math.random() * 20 + 10,
-      //     cat: catImages.current![index],
-      //   }
-      // });
-    });
-
-    loadParticles(assets.particles, gl).then(particles => {
-      engine.current.addResource("particles", particles);
-    });
-
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-
-    engine.current.addResource("material", {
-      programInfo: programInfo,
-      vao,
-    });
-  }
 
   const getCanvasRef = useCallback((canvas: HTMLCanvasElement | null) => {
     if (!canvas) {
@@ -101,7 +40,7 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
       throw new Error("Unable to initialize WebGL. Your browser or machine may not support it.");
     }
 
-    initWebgl(gl);
+    addWebglResources(engine.current, gl, assets);
   }, []);
 
   useEffect(() => {
@@ -113,10 +52,7 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
   }, [isPlaying]);
 
   useEffect(() => {
-    engine.current.addResource("gravity", {
-      x: 0,
-      y: 9.81
-    });
+    addPhysicsResources(engine.current);
     addSystems(engine.current);
   }, []);
 

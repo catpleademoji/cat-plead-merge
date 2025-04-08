@@ -1,7 +1,6 @@
 export type CatAssetData = {
   name: string;
   src: string;
-  size: number;
   score: number;
 }
 

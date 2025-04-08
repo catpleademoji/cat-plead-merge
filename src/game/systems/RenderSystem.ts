@@ -1,23 +1,26 @@
-import { Vector2 } from "@/types/Vector2";
+import { Vector2 } from "@/game/types/Vector2";
 import { matrix3x3 } from "@/webgl/matrix3x3";
 import { ProgramInfo } from "@/webgl/ProgramInfo";
 import { QueryResult, System } from "cat-plead-engine";
-import { Position, Sprite } from "../components";
+import { Position, Rotation, Scale, Sprite } from "../components";
+import { Material, Webgl } from "../resources";
 
 export const RenderSystem: System = {
     query: {
         resources: [
-            "webgl",
-            "material",
+            Webgl,
+            Material,
         ],
         all: [
             Position,
+            Rotation,
+            Scale,
             Sprite,
         ]
     },
     run(queryResult: QueryResult) {
-        const gl = queryResult.resources.get<WebGL2RenderingContext>("webgl")!;
-        const material = queryResult.resources.get<{ programInfo: ProgramInfo, vao: WebGLVertexArrayObject }>("material")!;
+        const gl = queryResult.resources.get<WebGL2RenderingContext>(Webgl)!;
+        const material = queryResult.resources.get<{ programInfo: ProgramInfo, vao: WebGLVertexArrayObject }>(Material)!;
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -40,10 +43,13 @@ export const RenderSystem: System = {
 
         queryResult.entities.foreach((components) => {
             const position = components[Position] as Vector2;
+            const rotation = components[Rotation] as number;
+            const scale = components[Scale] as Vector2;
             const texture = components[Sprite] as WebGLTexture;
+
             matrix3x3.translate(matrix, projection, position.x, position.y);
-            matrix3x3.rotate(matrix, matrix, 0);
-            matrix3x3.scale(matrix, matrix, 150 / 4, 150 / 4);
+            matrix3x3.rotate(matrix, matrix, rotation);
+            matrix3x3.scale(matrix, matrix, scale.x, scale.y);
 
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.uniform1i(material.programInfo.uniformLocations.texSampler, 0);

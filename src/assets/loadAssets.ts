@@ -19,7 +19,7 @@ export async function loadCats(catData: CatAssetData[], gl: WebGL2RenderingConte
             id: index,
             name: cat.name,
             texture: texture,
-            size: cat.size,
+            size: image.width,
             score: cat.score,
         } satisfies Cat;
     }));
