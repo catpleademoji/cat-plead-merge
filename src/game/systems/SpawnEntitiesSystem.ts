@@ -2,7 +2,7 @@ import { Cat } from "@/types/Cat";
 import { System, QueryResult, Commands } from "cat-plead-engine";
 import { Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, CatIndex, LifeTime } from "../components";
 import { Webgl, EntityCommands, CatAssets } from "../resources";
-import { sphereInvVolume, sphereVolume } from "../math/math";
+import { sphereInvVolume, sphereVolume } from "../math";
 
 export const SpawnEntitiesSystem: System = {
   query: {

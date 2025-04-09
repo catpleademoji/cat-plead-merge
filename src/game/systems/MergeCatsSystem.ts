@@ -1,10 +1,9 @@
-import { Commands, QueryResult, System } from "cat-plead-engine";
+import { Commands, Entity, QueryResult, System } from "cat-plead-engine";
 import { CatAssets, CollisionEvents, EntityCommands } from "../resources";
-import { EventQueue } from "../EventQueue";
-import { CollisionEvent } from "../types/CollisionEvent";
 import { Cat } from "@/types/Cat";
 import { AngularVelocity, CatIndex, ColliderRadius, InverseInertia, InverseMass, LifeTime, Position, Rotation, Scale, Sprite, Velocity } from "../components";
-import { sphereInvVolume, sphereVolume } from "../math/math";
+import { sphereInvVolume, sphereVolume } from "../math";
+import { Vector2 } from "../types/Vector2";
 
 export const MergeCatsSystem: System = {
     query: {
@@ -13,57 +12,200 @@ export const MergeCatsSystem: System = {
             EntityCommands,
             CatAssets,
         ],
+        all: [
+            CatIndex,
+            Position,
+            ColliderRadius,
+            LifeTime,
+        ]
     },
     run: function (queryResult: QueryResult): void {
-        const collisionEvents = queryResult.resources.get<EventQueue<CollisionEvent>>(CollisionEvents)!;
+        const lifeTimeThreshold = 0.25;
+        const mergeDistanceAllowance = 1;
+
+        type Body = {
+            entity: Entity;
+            catIndex: number;
+            position: Vector2;
+            colliderRadius: number;
+        };
+
+        const bodies: Body[] = [];
+
+        queryResult.entities.foreach((components, entity: Entity) => {
+            const lifeTime = components[LifeTime] as number;
+            if (lifeTime < lifeTimeThreshold) {
+                return;
+            }
+
+            const catIndex = components[CatIndex] as number;
+            const position = components[Position] as Vector2;
+            const colliderRadius = components[ColliderRadius] as number;
+            bodies.push({
+                entity,
+                catIndex,
+                position,
+                colliderRadius,
+            });
+        });
+
+        bodies.sort((a, b) => {
+            const minXA = a.position.x - a.colliderRadius;
+            const minXB = b.position.x - b.colliderRadius;
+            return minXA - minXB;
+        });
+
+        const collisions: {
+            bodyA: Body,
+            bodyB: Body,
+        }[] = [];
+        for (let i = 0; i < bodies.length; i++) {
+            const bodyA = bodies[i];
+            const maxXA = bodyA.position.x + bodyA.colliderRadius;
+
+            for (let k = i + 1; k < bodies.length; k++) {
+                const bodyB = bodies[k];
+                if (bodyA.catIndex !== bodyB.catIndex) {
+                    continue;
+                }
+                
+                const maxXB = bodyB.position.x - bodyB.colliderRadius;
+                if (maxXA + mergeDistanceAllowance < maxXB) {
+                    break;
+                }
+
+                const dx = bodyA.position.x - bodyB.position.x;
+                const dy = bodyA.position.y - bodyB.position.y;
+                const distancesq = dx * dx + dy * dy;
+                const radii = bodyA.colliderRadius + bodyB.colliderRadius;
+                if (distancesq <= radii * radii + mergeDistanceAllowance) {
+                    collisions.push({
+                        bodyA,
+                        bodyB
+                    });
+                }
+            }
+        }
+
         const commands = queryResult.resources.get<Commands>(EntityCommands)!;
         const catAssets = queryResult.resources.get<Cat[]>(CatAssets)!;
-        
-        const lifeTimeThreshold = 0.25;
 
-        collisionEvents.foreach(({ bodyA, bodyB }) => {
-            const catIndexA = queryResult.entities.getComponent<number>(bodyA.entity, CatIndex);
-            const catIndexB = queryResult.entities.getComponent<number>(bodyB.entity, CatIndex);
+        const groupSizes = new Map<number, number>();
+        const entitiesToCreate: {
+            parents: Map<number, Entity>;
+            catIndex: number;
+            score: number;
+        }[] = [];
+        collisions.forEach(pair => {
+            const countA = groupSizes.get(pair.bodyA.entity.index);
+            groupSizes.set(pair.bodyA.entity.index, countA ? countA + 1 : 1);
 
-            const lifeTimeA = queryResult.entities.getComponent<number>(bodyA.entity, LifeTime);
-            const lifeTimeB = queryResult.entities.getComponent<number>(bodyB.entity, LifeTime);
-            if (catIndexA === catIndexB && lifeTimeA > lifeTimeThreshold && lifeTimeB > lifeTimeThreshold) {
-                const rotationA = queryResult.entities.getComponent<number>(bodyA.entity, Rotation);
-                const rotationB = queryResult.entities.getComponent<number>(bodyB.entity, Rotation);
+            const countB = groupSizes.get(pair.bodyB.entity.index);
+            groupSizes.set(pair.bodyB.entity.index, countB ? countB + 1 : 1);
 
-                const nextCatIndex = (catIndexA + 1) % catAssets.length;
-                const nextCat = catAssets[nextCatIndex];
+            const dupeIndex = entitiesToCreate.findIndex(entity => {
+                return entity.parents.has(pair.bodyA.entity.index) || entity.parents.has(pair.bodyB.entity.index);
+            });
+            if (dupeIndex !== -1) {
+                // more than two cats are merging with each other
+                const mergedCat = entitiesToCreate[dupeIndex];
+                const catIndex = (mergedCat.catIndex + 1) % catAssets.length;
 
-                const radius = nextCat.size / 2;
-                const volume = sphereVolume(radius);
-                const mass = sphereInvVolume(volume);
-                const moment_of_inertia = 2 / 5 * mass * Math.pow(mass, 3);
-                
-                const entity = {
-                    [CatIndex]: nextCatIndex,
-                    [Position]: {
-                        x: (bodyA.position.x + bodyB.position.x) / 2,
-                        y: (bodyA.position.y + bodyB.position.y) / 2,
-                    },
-                    [Rotation]: (rotationA + rotationB) / 2,
-                    [Scale]: { x: nextCat.size, y: nextCat.size },
-                    [Velocity]: {
-                        x: (bodyA.velocity.x + bodyB.velocity.x) / 2,
-                        y: (bodyA.velocity.y + bodyB.velocity.y) / 2,
-                    },
-                    [AngularVelocity]: (bodyA.angularVelocity + bodyB.angularVelocity) / 2,
-                    [Sprite]: nextCat.texture,
-                    [ColliderRadius]: radius,
-                    [InverseMass]: 1 / mass,
-                    [InverseInertia]: 1 / moment_of_inertia,
-                    [LifeTime]: 0,
+                const parents = mergedCat.parents;
+                if (!parents.has(pair.bodyA.entity.index)) {
+                    parents.set(pair.bodyA.entity.index, pair.bodyA.entity);
+                }
+                if (!parents.has(pair.bodyB.entity.index)) {
+                    parents.set(pair.bodyB.entity.index, pair.bodyB.entity);
+                }
+
+                entitiesToCreate[dupeIndex] = {
+                    parents: parents,
+                    catIndex: catIndex,
+                    score: mergedCat.score * 2
                 };
-
-                commands.spawnFromComponents(entity);
-
-                commands.destroyEntity(bodyA.entity);
-                commands.destroyEntity(bodyB.entity);
+            } else {
+                // merge two cats
+                const prev_type = pair.bodyA.catIndex;
+                const cat_index = (prev_type + 1) % catAssets.length;
+                const score = catAssets[prev_type].score * 2;
+                const parents = new Map<number, Entity>();
+                parents.set(pair.bodyA.entity.index, pair.bodyA.entity);
+                parents.set(pair.bodyB.entity.index, pair.bodyB.entity);
+                entitiesToCreate.push({
+                    parents: parents,
+                    catIndex: cat_index,
+                    score: score
+                });
             }
         });
+
+        entitiesToCreate.forEach(entity => {
+            const components = entity.parents.values()
+                .reduce((components, parent) => {
+                    const position = queryResult.entities.getComponent(parent, Position) as Vector2;
+                    const velocity = queryResult.entities.getComponent(parent, Velocity) as Vector2;
+                    const rotation = queryResult.entities.getComponent(parent, Rotation) as number;
+                    const angularVelocity = queryResult.entities.getComponent(parent, AngularVelocity) as number;
+                    return {
+                        position: {
+                            x: components.position.x + position.x,
+                            y: components.position.y + position.y,
+                        },
+                        velocity: {
+                            x: components.velocity.x + velocity.x,
+                            y: components.velocity.y + velocity.y,
+                        },
+                        rotation: components.rotation + rotation,
+                        angularVelocity: components.angularVelocity + angularVelocity,
+                    };
+                }, {
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                    velocity: {
+                        x: 0,
+                        y: 0,
+                    },
+                    rotation: 0,
+                    angularVelocity: 0
+                });
+
+            const cat = catAssets[entity.catIndex];
+
+            const radius = cat.size / 2;
+            const volume = sphereVolume(radius);
+            const mass = sphereInvVolume(volume);
+            const momentOfInertia = 2 / 5 * mass * Math.pow(mass, 3);
+
+            const entityComponents = {
+                score: entity.score,
+                [CatIndex]: entity.catIndex,
+                [Sprite]: cat.texture,
+                [ColliderRadius]: cat.size / 2,
+                [Position]: {
+                    x: components.position.x / entity.parents.size,
+                    y: components.position.y / entity.parents.size,
+                },
+                [Rotation]: components.rotation / entity.parents.size,
+                [Scale]: {
+                    x: cat.size,
+                    y: cat.size,
+                },
+                [Velocity]: {
+                    x: components.velocity.x / entity.parents.size,
+                    y: components.velocity.y / entity.parents.size,
+                },
+                [AngularVelocity]: components.angularVelocity / entity.parents.size,
+                [InverseMass]: 1 / mass,
+                [InverseInertia]: 1 / momentOfInertia,
+                [LifeTime]: 0,
+            };
+
+            commands.spawnFromComponents(entityComponents);
+            entity.parents.values().forEach(parent => commands.destroyEntity(parent))
+        });
+
     }
 }

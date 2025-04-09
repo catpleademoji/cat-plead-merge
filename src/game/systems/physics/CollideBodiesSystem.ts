@@ -1,12 +1,10 @@
 import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, Position, Velocity } from "@/game/components";
 import { Vector2 } from "@/game/types/Vector2";
-import { CollisionEvent } from "@/game/types/CollisionEvent";
 import { Collision } from "@/game/types/Collision";
 import { Body } from "@/game/types/Body";
 import { Entity, QueryResult, System } from "cat-plead-engine";
-import { CollisionEvents, Webgl } from "@/game/resources";
-import { cross, dot } from "@/game/math/math";
-import { EventQueue } from "../../EventQueue";
+import { Webgl } from "@/game/resources";
+import { cross, dot } from "@/game/math";
 
 const staticFrictionCats = 0.2;
 const kineticFrictionCats = 0.1;
@@ -23,7 +21,6 @@ export const CollideBodiesSystem: System = {
     query: {
         resources: [
             Webgl,
-            CollisionEvents,
         ],
         all: [
             Position,
@@ -42,8 +39,6 @@ export const CollideBodiesSystem: System = {
             maxX: webgl.canvas.width,
             maxY: webgl.canvas.height,
         };
-        const collisionEvents = queryResult.resources.getRW<EventQueue<CollisionEvent>>(CollisionEvents)!;
-        collisionEvents.clear();
 
         const bodies: Body[] = [];
 
@@ -65,13 +60,7 @@ export const CollideBodiesSystem: System = {
                 entity
             });
         });
-
-        bodies.sort((a, b) => {
-            const minXA = a.position.x - a.colliderRadius;
-            const minXB = b.position.x - b.colliderRadius;
-            return minXA - minXB;
-        });
-
+        
         let dynamicCollisions: Collision[] = [];
         let staticCollisions: Collision[] = [];
 
@@ -351,12 +340,5 @@ export const CollideBodiesSystem: System = {
                 queryResult.entities.setComponent(bodyA.entity, AngularVelocity, bodyA.angularVelocity);
             }
         }
-
-        dynamicCollisions.forEach(collision => collisionEvents.enqueue({
-            bodyA: collision.bodyA,
-            bodyB: collision.bodyB!,
-            contact: collision.contact,
-            normal: collision.normal,
-        }));
     }
 }
