@@ -10,7 +10,10 @@ export const InverseInertia = "inv_inertia";
 export const ColliderRadius = "collider_radius";
 
 export const Sprite = "sprite";
+export const Color = "color";
 
 export const CatIndex = "cat_index";
-export const LifeTime = "life-time";
+export const LifeTime = "life_time";
+
+export const MaxLifeTime = "max_life_time"
 

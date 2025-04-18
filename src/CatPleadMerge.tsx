@@ -7,13 +7,15 @@ import { addSystems } from "./game/systems";
 import { AudioContext, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
+import { Theme } from "./types/Theme";
 
 export type CatPleadMergeProps = {
   id: string;
   assets: AssetManifest;
+  theme: Theme
 }
 
-export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
+export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
   const engine = useRef<Engine>(new Engine());
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -54,6 +56,7 @@ export function CatPleadMerge({ id, assets }: CatPleadMergeProps) {
   useEffect(() => {
     addPhysicsResources(engine.current);
     addSystems(engine.current);
+    engine.current.addResource("theme", theme);
   }, []);
 
   return (

@@ -1,0 +1,65 @@
+import { Particle } from "@/types/Particle";
+import { System, QueryResult, Commands } from "cat-plead-engine";
+import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../components";
+import { EventQueue } from "../EventQueue";
+import { EntityCommands, CatMergedEvents, ParticleAssets } from "../resources";
+import { CatMergeEvent } from "../types/CatMergeEvent";
+import { Colors } from "../types/Color";
+import { Theme } from "@/types/Theme";
+
+export const SpawnParticlesOnMergeSystem: System = {
+  query: {
+    resources: [
+      "theme",
+      EntityCommands,
+      CatMergedEvents,
+      ParticleAssets,
+    ]
+  },
+  run(queryResult: QueryResult) {
+    const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+    const mergeEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
+    const particles = queryResult.resources.get<Particle[]>(ParticleAssets)!;
+    const theme = queryResult.resources.get<Theme>("theme")!;
+
+    mergeEvents.foreach(mergeEvent => {
+      const numParticles = Math.min(2, Math.floor(Math.log2(mergeEvent.cat.score)));
+
+      for (let i = 0; i < numParticles; i++) {
+        const randomIndex = Math.floor(Math.random() * particles.length);
+        const particle = particles[randomIndex];
+
+        const velocityAngle = Math.random() * (Math.PI / 2) - (3 * Math.PI / 4);
+        const speed = Math.random() * (200 - 50) + 50;
+        const velocity = {
+          x: Math.cos(velocityAngle) * speed,
+          y: Math.sin(velocityAngle) * speed,
+        };
+
+        const rotation = Math.atan2(velocity.y, velocity.x);
+
+        const colorIndex = Math.floor(Math.random() * theme.values.length);
+        const color = theme.values[colorIndex];
+
+        const maxScale = 1.5;
+        const minScale = 0.75;
+        const scaleFactor = Math.random() * (maxScale - minScale) + minScale;
+
+        commands.spawnFromComponents({
+          [Sprite]: particle.texture,
+          [Position]: {
+            x: mergeEvent.cat.position.x,
+            y: mergeEvent.cat.position.y
+          },
+          [Velocity]: velocity,
+          [Rotation]: rotation,
+          [AngularVelocity]: 0,
+          [Scale]: { x: particle.size * scaleFactor, y: particle.size * scaleFactor },
+          [Color]: { ...color },
+          [LifeTime]: 0,
+          [MaxLifeTime]: (Math.random() + 1),
+        });
+      }
+    });
+  }
+};

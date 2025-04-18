@@ -1,16 +1,19 @@
 import { Commands, Entity, QueryResult, System } from "cat-plead-engine";
-import { CatAssets, CollisionEvents, EntityCommands } from "../resources";
+import { CatAssets, CatMergedEvents, EntityCommands } from "../resources";
 import { Cat } from "@/types/Cat";
-import { AngularVelocity, CatIndex, ColliderRadius, InverseInertia, InverseMass, LifeTime, Position, Rotation, Scale, Sprite, Velocity } from "../components";
+import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, Position, Rotation, Scale, Sprite, Velocity } from "../components";
 import { sphereInvVolume, sphereVolume } from "../math";
 import { Vector2 } from "../types/Vector2";
+import { EventQueue } from "../EventQueue";
+import { CatMergeEvent } from "../types/CatMergeEvent";
+import { Colors } from "../types/Color";
 
 export const MergeCatsSystem: System = {
     query: {
         resources: [
-            CollisionEvents,
             EntityCommands,
             CatAssets,
+            CatMergedEvents,
         ],
         all: [
             CatIndex,
@@ -20,8 +23,8 @@ export const MergeCatsSystem: System = {
         ]
     },
     run: function (queryResult: QueryResult): void {
-        const lifeTimeThreshold = 0.25;
-        const mergeDistanceAllowance = 1;
+        const lifeTimeThreshold = 0.15;
+        const mergeDistanceAllowance = 0.1;
 
         type Body = {
             entity: Entity;
@@ -68,7 +71,7 @@ export const MergeCatsSystem: System = {
                 if (bodyA.catIndex !== bodyB.catIndex) {
                     continue;
                 }
-                
+
                 const maxXB = bodyB.position.x - bodyB.colliderRadius;
                 if (maxXA + mergeDistanceAllowance < maxXB) {
                     break;
@@ -89,6 +92,8 @@ export const MergeCatsSystem: System = {
 
         const commands = queryResult.resources.get<Commands>(EntityCommands)!;
         const catAssets = queryResult.resources.get<Cat[]>(CatAssets)!;
+        const mergedEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
+        mergedEvents.clear();
 
         const groupSizes = new Map<number, number>();
         const entitiesToCreate: {
@@ -180,7 +185,6 @@ export const MergeCatsSystem: System = {
             const momentOfInertia = 2 / 5 * mass * Math.pow(mass, 3);
 
             const entityComponents = {
-                score: entity.score,
                 [CatIndex]: entity.catIndex,
                 [Sprite]: cat.texture,
                 [ColliderRadius]: cat.size / 2,
@@ -201,11 +205,20 @@ export const MergeCatsSystem: System = {
                 [InverseMass]: 1 / mass,
                 [InverseInertia]: 1 / momentOfInertia,
                 [LifeTime]: 0,
+                [Color]: Colors.white,
             };
 
-            commands.spawnFromComponents(entityComponents);
             entity.parents.values().forEach(parent => commands.destroyEntity(parent))
+            commands.spawnFromComponents(entityComponents);
+            mergedEvents.enqueue({
+                cat: {
+                    catIndex: entity.catIndex,
+                    score: entity.score,
+                    position: entityComponents[Position],
+                    colliderRadius: entityComponents[ColliderRadius],
+                },
+                parents: entity.parents.size
+            });
         });
-
     }
 }

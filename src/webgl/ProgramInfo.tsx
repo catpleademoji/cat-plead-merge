@@ -1,5 +1,5 @@
 type Attributes = "position" | "textureCoord";
-type Uniforms = "matrix" | "texSampler";
+type Uniforms = "matrix" | "texSampler" | "color";
 
 export type ProgramInfo = {
   program: WebGLProgram;

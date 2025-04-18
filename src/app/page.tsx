@@ -64,12 +64,12 @@ const catData: CatAssetData[] = [
 const particleData: ParticleAssetData[] = [
   {
     name: "sparkles",
-    src: "/images/particles/sparkles.svg",
+    src: "/images/particles/sparkles.png",
     size: 20,
   },
   {
     name: "heart",
-    src: "/images/particles/heart.svg",
+    src: "/images/particles/heart.png",
     size: 16,
   },
 ];
@@ -85,12 +85,57 @@ const soundEffectData: SoundEffectAssetData[] = [
   }
 ];
 
+const themes = [
+  {
+    name: "pride",
+    values: [
+      "#FF000E",
+      "#FF7300",
+      "#FAD220",
+      "#138F3E",
+      "#3558A0",
+      "#880082"
+    ]
+  },
+  {
+    name: "trans",
+    values: [
+      "#5BCEFA",
+      "#EEEEEE",
+      "#F5A9B8"
+    ]
+  },
+  {
+    name: "watermelon",
+    values: [
+      "#D21034",
+      "#141414",
+      "#EEEEEE",
+      "#007229"
+    ]
+  }
+].map(theme => {
+  return {
+    ...theme,
+    values: theme.values.map(value => {
+      const color = parseInt(value.slice(1), 16);
+      return {
+        r: ((color >> 16) & 255) / 255,
+        g: ((color >> 8) & 255) / 255,
+        b: ((color >> 0) & 255) / 255,
+        a: 1,
+      }
+    })
+  };
+});
+
 export default function Home() {
   return <>
     <CatPleadMerge id="game-canvas" assets={{
       cats: catData,
       particles: particleData,
       soundEffects: soundEffectData,
-    }} />
+    }}
+    theme={themes[Math.floor(Math.random() * themes.length)]} />
   </>
 }

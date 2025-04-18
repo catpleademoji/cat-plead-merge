@@ -1,8 +1,9 @@
 import { Cat } from "@/types/Cat";
 import { System, QueryResult, Commands } from "cat-plead-engine";
-import { Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, CatIndex, LifeTime } from "../components";
+import { Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, CatIndex, LifeTime, Color } from "../components";
 import { Webgl, EntityCommands, CatAssets } from "../resources";
 import { sphereInvVolume, sphereVolume } from "../math";
+import { Colors } from "../types/Color";
 
 export const SpawnEntitiesSystem: System = {
   query: {
@@ -29,7 +30,7 @@ export const SpawnEntitiesSystem: System = {
       const volume = sphereVolume(radius);
       const mass = sphereInvVolume(volume);
       const moment_of_inertia = 2 / 5 * mass * Math.pow(mass, 3);
-  
+
       const angle = Math.random() * 2 * Math.PI;
       commands.spawnFromComponents({
         [CatIndex]: catIndex,
@@ -52,6 +53,7 @@ export const SpawnEntitiesSystem: System = {
         [InverseInertia]: 1 / moment_of_inertia,
         [ColliderRadius]: radius,
         [LifeTime]: 0,
+        [Color]: Colors.white,
       });
     }
   }

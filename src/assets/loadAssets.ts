@@ -38,8 +38,8 @@ export async function loadParticles(particleData: ParticleAssetData[], gl: WebGL
     }));
 }
 
-export async function loadSoundEffects(soundEffectData: SoundEffectAssetData[], audioContext: AudioContext) {
-    return await Promise.all(soundEffectData.map(async (soundEffect, index) => {
+export async function loadSoundEffects(soundEffectData: SoundEffectAssetData[], audioContext: AudioContext): Promise<Map<string, SoundEffect>> {
+    const soundEffects = await Promise.all(soundEffectData.map(async (soundEffect) => {
         const audioBuffers = await Promise.all(soundEffect.src.map(async src => {
             const res = await fetch(src);
             // audio assets are stored as base64 text because neocities 
@@ -62,4 +62,9 @@ export async function loadSoundEffects(soundEffectData: SoundEffectAssetData[], 
             variants: audioBuffers,
         } satisfies SoundEffect;
     }));
+
+    return soundEffects.reduce((map, soundEffect) => {
+        map.set(soundEffect.name, soundEffect);
+        return map;
+    }, new Map<string, SoundEffect>());
 }

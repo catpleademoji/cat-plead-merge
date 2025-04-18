@@ -1,27 +1,34 @@
 import { Material } from "@/webgl/Material";
 import { initBuffers } from "./initBuffers";
 import { ProgramInfo } from "./ProgramInfo";
-import { VertexShaderSource, FragmentShaderSource } from "./ShaderSource";
+import { SimpleSpriteShader, WarningEffectShader } from "./ShaderSource";
 import { initShaderProgram } from "./shaderUtils";
 
-export function initWebgl(gl: WebGL2RenderingContext): Material {
+export function initWebgl(gl: WebGL2RenderingContext) {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    const shaderProgram = initShaderProgram(gl, VertexShaderSource, FragmentShaderSource);
-
-    const programInfo: ProgramInfo = {
-        program: shaderProgram,
+    const simpleSpriteShaderProgram = initShaderProgram(gl, SimpleSpriteShader.vertex, SimpleSpriteShader.fragment);
+    const simpleSpriteShaderProgramInfo: ProgramInfo = {
+        program: simpleSpriteShaderProgram,
         attribLocations: {
-            position: gl.getAttribLocation(shaderProgram, "aPosition"),
-            textureCoord: gl.getAttribLocation(shaderProgram, "aTextureCoord"),
+            position: gl.getAttribLocation(simpleSpriteShaderProgram, "aPosition"),
+            textureCoord: gl.getAttribLocation(simpleSpriteShaderProgram, "aTextureCoord"),
         },
         uniformLocations: {
-            matrix: gl.getUniformLocation(shaderProgram, "uMatrix"),
-            texSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
+            matrix: gl.getUniformLocation(simpleSpriteShaderProgram, "uMatrix"),
+            texSampler: gl.getUniformLocation(simpleSpriteShaderProgram, "uSampler"),
+            color: gl.getUniformLocation(simpleSpriteShaderProgram, "uColor"),
         },
     };
+    const simpleSpriteVao = initBuffers(gl, simpleSpriteShaderProgramInfo);
 
-    const vao = initBuffers(gl, programInfo);
-    return { programInfo, vao };
+    const simpleSpriteShader: Material = {
+        programInfo: simpleSpriteShaderProgramInfo,
+        vao: simpleSpriteVao,
+    };
+
+    return {
+        simpleSpriteShader,
+    }
 }
