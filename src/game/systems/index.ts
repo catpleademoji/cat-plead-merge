@@ -12,6 +12,8 @@ import { CatMergedEvents } from "../resources";
 import { SpawnParticlesOnMergeSystem } from "./SpawnParticlesOnMergeSystem";
 import { DestroyEntitiesAtMaxLifetimeSystem } from "./DestroyEntitiesAtMaxLifetimeSystem";
 import { ChangeOpacityOnLifetimeSystem } from "./ChangeOpacityOnLifetimeSystem";
+import { ClearMouseInputsSystem } from "./input/ClearMouseInputsSystem";
+import { SpawnCatOnClickSystem } from "./SpawnCatOnClickSystem";
 
 export function addSystems(engine: Engine) {
   engine
@@ -21,10 +23,12 @@ export function addSystems(engine: Engine) {
     .addSystem(Schedule.Update, IntegrateMotion)
     .addSystem(Schedule.Update, CollideBodiesSystem)
     .addSystem(Schedule.Update, MergeCatsSystem)
+    .addSystem(Schedule.Update, SpawnCatOnClickSystem)
     .addSystem(Schedule.Update, PlayPopSoundOnMergeSystem)
     .addSystem(Schedule.Update, SpawnParticlesOnMergeSystem)
     .addSystem(Schedule.Update, ChangeOpacityOnLifetimeSystem)
     .addSystem(Schedule.Update, DestroyEntitiesAtMaxLifetimeSystem)
+    .addSystem(Schedule.Update, ClearMouseInputsSystem)
     .addResource(CatMergedEvents, new EventQueue<CatMergeEvent>())
     ;
 }

@@ -13,6 +13,10 @@ export class EventQueue<T> {
         return this.items.shift();
     }
 
+    peek(): T | undefined {
+        return this.items[0];
+    }
+
     clear() {
         this.items = [];
     }

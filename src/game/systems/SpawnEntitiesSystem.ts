@@ -21,7 +21,6 @@ export const SpawnEntitiesSystem: System = {
     const screenWidth = gl.canvas.width;
     const screenHeight = gl.canvas.height;
 
-
     for (let i = 0; i < 50; i++) {
       const catIndex = Math.floor(Math.random() * (cats.length / 2));
 

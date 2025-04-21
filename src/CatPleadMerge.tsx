@@ -8,6 +8,8 @@ import { AudioContext, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
 import { Theme } from "./types/Theme";
+import { MouseDownEvent, MouseDownEvents, MouseUpEvent, MouseUpEvents } from "./types/MouseEvent";
+import { EventQueue } from "./game/EventQueue";
 
 export type CatPleadMergeProps = {
   id: string;
@@ -43,6 +45,33 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
     }
 
     addWebglResources(engine.current, gl, assets);
+
+    function onMouseDown(evt: PointerEvent) {
+      if (evt.button === 0) {
+        const mousedownEvents = engine.current.getResource<MouseDownEvents>("mousedownevents");
+        mousedownEvents?.enqueue({
+          x: evt.offsetX,
+          y: evt.offsetX,
+        });
+      }
+    }
+
+    function onMouseUp(evt: PointerEvent) {
+      if (evt.button === 0) {
+        const mouseupEvents = engine.current.getResource<MouseUpEvents>("mouseupevents");
+        mouseupEvents?.enqueue({
+          x: evt.offsetX,
+          y: evt.offsetX,
+        });
+      }
+    }
+    canvas.addEventListener("pointerdown", onMouseDown);
+    canvas.addEventListener("pointerup", onMouseUp);
+
+    return () => {
+      canvas.removeEventListener("pointerdown", onMouseDown);
+      canvas.removeEventListener("pointerup", onMouseUp);
+    }
   }, []);
 
   useEffect(() => {
@@ -57,6 +86,8 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
     addPhysicsResources(engine.current);
     addSystems(engine.current);
     engine.current.addResource("theme", theme);
+    engine.current.addResource("mousedownevents", new EventQueue<MouseDownEvent>());
+    engine.current.addResource("mouseupevents", new EventQueue<MouseUpEvent>());
   }, []);
 
   return (
