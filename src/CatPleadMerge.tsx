@@ -8,7 +8,7 @@ import { AudioContext, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
 import { Theme } from "./types/Theme";
-import { MouseDownEvent, MouseDownEvents, MouseUpEvent, MouseUpEvents } from "./types/MouseEvent";
+import { MouseDownEvent, MouseDownEventQueue, MouseUpEvent, MouseUpEventQueue } from "./types/MouseEvent";
 import { EventQueue } from "./game/EventQueue";
 
 export type CatPleadMergeProps = {
@@ -48,7 +48,7 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
 
     function onMouseDown(evt: PointerEvent) {
       if (evt.button === 0) {
-        const mousedownEvents = engine.current.getResource<MouseDownEvents>("mousedownevents");
+        const mousedownEvents = engine.current.getResource<MouseDownEventQueue>("mousedownevents");
         mousedownEvents?.enqueue({
           x: evt.offsetX,
           y: evt.offsetX,
@@ -58,7 +58,7 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
 
     function onMouseUp(evt: PointerEvent) {
       if (evt.button === 0) {
-        const mouseupEvents = engine.current.getResource<MouseUpEvents>("mouseupevents");
+        const mouseupEvents = engine.current.getResource<MouseUpEventQueue>("mouseupevents");
         mouseupEvents?.enqueue({
           x: evt.offsetX,
           y: evt.offsetX,

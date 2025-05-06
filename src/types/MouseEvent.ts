@@ -10,5 +10,5 @@ export type MouseUpEvent = {
     y: number;
 }
 
-export type MouseDownEvents = EventQueue<MouseDownEvent>;
-export type MouseUpEvents = EventQueue<MouseUpEvent>;
+export type MouseDownEventQueue = EventQueue<MouseDownEvent>;
+export type MouseUpEventQueue = EventQueue<MouseUpEvent>;

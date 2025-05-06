@@ -1,4 +1,4 @@
-import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, Position, Velocity } from "@/game/components";
+import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, NextCat, Position, Velocity } from "@/game/components";
 import { Vector2 } from "@/game/types/Vector2";
 import { Collision } from "@/game/types/Collision";
 import { Body } from "@/game/types/Body";
@@ -29,6 +29,9 @@ export const CollideBodiesSystem: System = {
             InverseMass,
             InverseInertia,
             ColliderRadius,
+        ],
+        none: [
+            NextCat
         ]
     },
     run(queryResult: QueryResult) {

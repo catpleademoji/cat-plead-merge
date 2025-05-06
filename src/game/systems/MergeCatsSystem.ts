@@ -1,7 +1,7 @@
 import { Commands, Entity, QueryResult, System } from "cat-plead-engine";
 import { CatAssets, CatMergedEvents, EntityCommands } from "../resources";
 import { Cat } from "@/types/Cat";
-import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, Position, Rotation, Scale, Sprite, Velocity } from "../components";
+import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, NextCat, Position, Rotation, Scale, Sprite, Velocity } from "../components";
 import { sphereInvVolume, sphereVolume } from "../math";
 import { Vector2 } from "../types/Vector2";
 import { EventQueue } from "../EventQueue";
@@ -20,6 +20,9 @@ export const MergeCatsSystem: System = {
             Position,
             ColliderRadius,
             LifeTime,
+        ],
+        none: [
+            NextCat
         ]
     },
     run: function (queryResult: QueryResult): void {

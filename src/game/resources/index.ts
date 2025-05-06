@@ -13,3 +13,6 @@ export const ParticleAssets = "particles";
 export const SoundEffectAssets = "sound_effects";
 
 export const CatMergedEvents = "cat_merged_event_queue";
+
+export const MouseUpEvents = "mouseupevents";
+export const MouseDownEvents = "mousedownevents";

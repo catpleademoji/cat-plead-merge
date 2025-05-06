@@ -1,4 +1,4 @@
-import { AngularVelocity, Position, Rotation, Velocity } from "@/game/components";
+import { AngularVelocity, NextCat, Position, Rotation, Velocity } from "@/game/components";
 import { PhysicsSettings as PhysicsSettingsRes, Time as TimeRes } from "@/game/resources";
 import { PhysicsSettings } from "@/game/types/PhysicsSettings";
 import { Vector2 } from "@/game/types/Vector2";
@@ -15,6 +15,9 @@ export const IntegrateMotion: System = {
             Velocity,
             Rotation,
             AngularVelocity,
+        ],
+        none: [
+            NextCat
         ]
     },
     run(queryResult: QueryResult) {
