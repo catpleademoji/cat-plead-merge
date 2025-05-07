@@ -17,10 +17,14 @@ import { DropCatOnClickSystem } from "./DropCatOnClickSystem";
 import { SpawnNextCatSystem } from "./SpawnNextCatSystem";
 import { SetCatDropPositionSystem, SetCatTargetPositionSystem } from "./SetCatTargetPositionSystem";
 import { MoveCatToClickPositionSystem } from "./MoveCatToClickPositionSystem";
+import { DetectHighestCatSystem } from "./DetectHighestCatSystem";
+import { SpawnWarningSystem } from "./SpawnWarningSystem";
+import { ShowWarningSystem } from "./ShowWarningSystem";
 
 export function addSystems(engine: Engine) {
   engine
     .addSystem(Schedule.Start, SpawnEntitiesSystem)
+    .addSystem(Schedule.Start, SpawnWarningSystem)
     .addSystem(Schedule.Update, SetCatTargetPositionSystem)
     .addSystem(Schedule.Update, SetCatDropPositionSystem)
     .addSystem(Schedule.Update, MoveCatToClickPositionSystem)
@@ -34,6 +38,8 @@ export function addSystems(engine: Engine) {
     .addSystem(Schedule.Update, PlayPopSoundOnMergeSystem)
     .addSystem(Schedule.Update, SpawnParticlesOnMergeSystem)
     .addSystem(Schedule.Update, ChangeOpacityOnLifetimeSystem)
+    .addSystem(Schedule.Update, DetectHighestCatSystem)
+    .addSystem(Schedule.Update, ShowWarningSystem)
     .addSystem(Schedule.Update, DestroyEntitiesAtMaxLifetimeSystem)
     .addSystem(Schedule.Update, ClearMouseInputsSystem)
     .addResource(CatMergedEvents, new EventQueue<CatMergeEvent>())

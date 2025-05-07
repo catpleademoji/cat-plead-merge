@@ -12,6 +12,18 @@ export function clamp(a: number, min: number, max: number): number {
     return Math.min(max, Math.max(a, min));
 }
 
+export function remap(a: number, b: number, c: number, d: number, x: number) {
+    return lerp(c, d, invLerp(a, b, x));
+}
+
+export function lerp(a: number, b: number, t: number) {
+    return a + (b - a) * t;
+}
+
+export function invLerp(a: number, b: number, x: number) {
+    return (x - a) / (b - a);
+}
+
 export function sphereVolume(radius: number) {
     const K = Math.PI * 4 / 3;
     return K * Math.pow(radius, 3);

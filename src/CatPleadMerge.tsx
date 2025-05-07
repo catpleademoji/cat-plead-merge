@@ -4,12 +4,13 @@ import { useAudioContext } from "./hooks/useAudioContext";
 import { loadSoundEffects } from "./assets/loadAssets";
 import { Engine } from "cat-plead-engine";
 import { addSystems } from "./game/systems";
-import { AudioContext, SoundEffectAssets } from "./game/resources";
+import { AudioContext, CatSpawnTimer, MouseDownEvents, MouseUpEvents, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
 import { Theme } from "./types/Theme";
 import { MouseDownEvent, MouseDownEventQueue, MouseUpEvent, MouseUpEventQueue } from "./types/MouseEvent";
 import { EventQueue } from "./game/EventQueue";
+import { addGameplayResources } from "./game/resources/addGameplayResources";
 
 export type CatPleadMergeProps = {
   id: string;
@@ -84,10 +85,8 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
 
   useEffect(() => {
     addPhysicsResources(engine.current);
+    addGameplayResources(engine.current, theme);
     addSystems(engine.current);
-    engine.current.addResource("theme", theme);
-    engine.current.addResource("mousedownevents", new EventQueue<MouseDownEvent>());
-    engine.current.addResource("mouseupevents", new EventQueue<MouseUpEvent>());
   }, []);
 
   return (

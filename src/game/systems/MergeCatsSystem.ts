@@ -26,8 +26,8 @@ export const MergeCatsSystem: System = {
         ]
     },
     run: function (queryResult: QueryResult): void {
-        const lifeTimeThreshold = 0.15;
-        const mergeDistanceAllowance = 0.1;
+        const lifeTimeThreshold = 0.25;
+        const mergeDistanceAllowance = 1;
 
         type Body = {
             entity: Entity;

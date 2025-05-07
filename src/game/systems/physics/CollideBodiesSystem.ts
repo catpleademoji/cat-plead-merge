@@ -6,8 +6,8 @@ import { Entity, QueryResult, System } from "cat-plead-engine";
 import { Webgl } from "@/game/resources";
 import { cross, dot } from "@/game/math";
 
-const staticFrictionCats = 0.2;
-const kineticFrictionCats = 0.1;
+const staticFrictionCats = 0.15;
+const kineticFrictionCats = 0.05;
 
 const staticFrictionWall = 0;
 const kineticFrictionWall = 0;

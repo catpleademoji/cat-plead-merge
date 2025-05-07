@@ -1,7 +1,5 @@
 import { Engine } from "cat-plead-engine";
 import { PhysicsSettings } from ".";
-import { EventQueue } from "../EventQueue";
-import { CollisionEvent } from "../types/CollisionEvent";
 
 export function addPhysicsResources(engine: Engine) {
     engine.addResource(PhysicsSettings, {

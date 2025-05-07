@@ -1,9 +1,10 @@
-import { System, QueryResult, Commands } from "cat-plead-engine";
-import { EntityCommands, Webgl, CatAssets } from "../resources";
+import { System, QueryResult, Commands, Time } from "cat-plead-engine";
+import { EntityCommands, Webgl, CatAssets, CatSpawnTimer as CatSpawnTimerRes, Time as TimeRes } from "../resources";
 import { Cat } from "@/types/Cat";
 import { CatIndex, Position, Velocity, Scale, Rotation, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color, NextCat } from "../components";
 import { sphereVolume, sphereInvVolume } from "../math";
 import { Colors } from "../types/Color";
+import { Timer } from "@/types/Timer";
 
 export const SpawnNextCatSystem: System = {
     query: {
@@ -11,6 +12,8 @@ export const SpawnNextCatSystem: System = {
             EntityCommands,
             Webgl,
             CatAssets,
+            CatSpawnTimerRes,
+            TimeRes,
         ],
         all: [
             NextCat,
@@ -18,6 +21,14 @@ export const SpawnNextCatSystem: System = {
     },
     run(queryResult: QueryResult) {
         if (queryResult.entities.count() > 0) {
+            return;
+        }
+
+        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const catSpawnTimer = queryResult.resources.getRW<Timer>(CatSpawnTimerRes)!;
+        catSpawnTimer.time += time.delta;
+
+        if (catSpawnTimer.time < 1) {
             return;
         }
 

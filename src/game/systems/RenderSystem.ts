@@ -51,7 +51,7 @@ export const RenderSystem: System = {
             const color = components[Color] as ColorRgba;
 
             matrix3x3.translate(matrix, projection, position.x, position.y);
-            matrix3x3.rotate(matrix, matrix, rotation);
+            matrix3x3.rotate(matrix, matrix, -rotation);
             matrix3x3.scale(matrix, matrix, scale.x, scale.y);
 
             gl.bindTexture(gl.TEXTURE_2D, texture);
