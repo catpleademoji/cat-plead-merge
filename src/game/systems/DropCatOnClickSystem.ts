@@ -1,5 +1,5 @@
-import { Commands, QueryResult, System } from "cat-plead-engine";
-import { CatSpawnTimer as CatSpawnTimerRes, EntityCommands, MouseUpEvents } from "../resources";
+import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
+import { CatSpawnTimer as CatSpawnTimerRes } from "../resources";
 import { DropPosition, LifeTime, NextCat, Position, TargetPosition } from "../components";
 import { Vector2 } from "../types/Vector2";
 import { Timer } from "@/types/Timer";
@@ -7,7 +7,7 @@ import { Timer } from "@/types/Timer";
 export const DropCatOnClickSystem: System = {
     query: {
         resources: [
-            EntityCommands,
+            DefaultResources.Commands,
             CatSpawnTimerRes,
         ],
         all: [
@@ -19,7 +19,7 @@ export const DropCatOnClickSystem: System = {
         ]
     },
     run(queryResult: QueryResult) {
-        const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+        const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
         queryResult.entities.foreach((components, entity) => {
             const position = components[Position] as Vector2;
             const targetPosition = components[TargetPosition] as Vector2;

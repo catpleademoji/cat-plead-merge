@@ -2,8 +2,7 @@ import { AssetManifest } from "@/assets/AssetManifest";
 import { loadCats, loadParticles } from "@/assets/loadAssets";
 import { initWebgl } from "@/webgl/initWebgl";
 import { Engine } from "cat-plead-engine";
-import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningMaterial } from ".";
-import { createTexture } from "@/webgl/shaderUtils";
+import { Webgl, CatAssets, ParticleAssets, SpriteMaterial } from ".";
 
 export function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, assets: AssetManifest) {
     engine.addResource(Webgl, gl);

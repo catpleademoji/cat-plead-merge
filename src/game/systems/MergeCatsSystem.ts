@@ -1,5 +1,5 @@
-import { Commands, Entity, QueryResult, System } from "cat-plead-engine";
-import { CatAssets, CatMergedEvents, EntityCommands } from "../resources";
+import { Commands, DefaultResources, Entity, QueryResult, System } from "cat-plead-engine";
+import { CatAssets, CatMergedEvents } from "../resources";
 import { Cat } from "@/types/Cat";
 import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, NextCat, Position, Rotation, Scale, Sprite, Velocity } from "../components";
 import { sphereInvVolume, sphereVolume } from "../math";
@@ -11,7 +11,7 @@ import { Colors } from "../types/Color";
 export const MergeCatsSystem: System = {
     query: {
         resources: [
-            EntityCommands,
+            DefaultResources.Commands,
             CatAssets,
             CatMergedEvents,
         ],
@@ -93,7 +93,7 @@ export const MergeCatsSystem: System = {
             }
         }
 
-        const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+        const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
         const catAssets = queryResult.resources.get<Cat[]>(CatAssets)!;
         const mergedEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
         mergedEvents.clear();

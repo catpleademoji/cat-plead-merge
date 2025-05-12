@@ -1,7 +1,7 @@
 import { Cat } from "@/types/Cat";
-import { System, QueryResult, Commands } from "cat-plead-engine";
+import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
 import { Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, CatIndex, LifeTime, Color } from "../components";
-import { Webgl, EntityCommands, CatAssets } from "../resources";
+import { Webgl, CatAssets } from "../resources";
 import { sphereInvVolume, sphereVolume } from "../math";
 import { Colors } from "../types/Color";
 
@@ -9,13 +9,13 @@ export const SpawnEntitiesSystem: System = {
   query: {
     resources: [
       Webgl,
-      EntityCommands,
+      DefaultResources.Commands,
       CatAssets,
     ]
   },
   run: function (queryResult: QueryResult): void {
     const gl = queryResult.resources.get<WebGL2RenderingContext>(Webgl)!;
-    const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+    const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
     const cats = queryResult.resources.get<Cat[]>(CatAssets)!;
 
     const screenWidth = gl.canvas.width;

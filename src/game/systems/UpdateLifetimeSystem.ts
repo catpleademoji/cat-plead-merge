@@ -1,14 +1,13 @@
-import { QueryResult, System, Time } from "cat-plead-engine";
+import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { LifeTime } from "../components";
-import { Time as TimeRes } from "../resources";
 
 export const UpdateLifetimeSystem: System = {
     query: {
-        resources: [TimeRes],
+        resources: [DefaultResources.Time],
         all: [LifeTime],
     },
     run: function (queryResult: QueryResult): void {
-        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
 
         queryResult.entities.foreach((components) => {
             const lifetime = components[LifeTime] as number;

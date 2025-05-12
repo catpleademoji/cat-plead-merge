@@ -1,7 +1,7 @@
 import { MouseDownEventQueue, MouseUpEventQueue } from "@/types/MouseEvent";
-import { System, QueryResult, Commands } from "cat-plead-engine";
+import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
 import { DropPosition, NextCat, Scale, TargetPosition } from "../components";
-import { MouseDownEvents, EntityCommands, MouseUpEvents, Webgl } from "../resources";
+import { MouseDownEvents, MouseUpEvents, Webgl } from "../resources";
 import { Vector2 } from "../types/Vector2";
 import { clamp } from "../math";
 
@@ -10,7 +10,7 @@ export const SetCatDropPositionSystem: System = {
         resources: [
             Webgl,
             MouseUpEvents,
-            EntityCommands,
+            DefaultResources.Commands,
         ],
         all: [NextCat, Scale],
         none: [DropPosition],
@@ -24,7 +24,7 @@ export const SetCatDropPositionSystem: System = {
 
         const mouseup = mouseupEvents.peek();
         if (mouseup) {
-            const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+            const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
             queryResult.entities.foreach((components, entity) => {
                 const scale = components[Scale] as Vector2;
                 commands.setComponent(entity, TargetPosition, {
@@ -42,7 +42,7 @@ export const SetCatTargetPositionSystem: System = {
         resources: [
             Webgl,
             MouseDownEvents,
-            EntityCommands,
+            DefaultResources.Commands,
         ],
         all: [NextCat, Scale],
         none: [DropPosition],
@@ -56,7 +56,7 @@ export const SetCatTargetPositionSystem: System = {
 
         const mousedown = mousedownEvents.peek();
         if (mousedown) {
-            const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+            const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
             queryResult.entities.foreach((components, entity) => {
                 const scale = components[Scale] as Vector2;
                 commands.setComponent(entity, TargetPosition, {

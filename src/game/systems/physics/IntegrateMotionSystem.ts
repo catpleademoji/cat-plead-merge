@@ -1,13 +1,13 @@
 import { AngularVelocity, NextCat, Position, Rotation, Velocity } from "@/game/components";
-import { PhysicsSettings as PhysicsSettingsRes, Time as TimeRes } from "@/game/resources";
+import { PhysicsSettings as PhysicsSettingsRes } from "@/game/resources";
 import { PhysicsSettings } from "@/game/types/PhysicsSettings";
 import { Vector2 } from "@/game/types/Vector2";
-import { QueryResult, System, Time } from "cat-plead-engine";
+import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 
 export const IntegrateMotion: System = {
     query: {
         resources: [
-            TimeRes,
+            DefaultResources.Time,
             PhysicsSettingsRes,
         ],
         all: [
@@ -21,7 +21,7 @@ export const IntegrateMotion: System = {
         ]
     },
     run(queryResult: QueryResult) {
-        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
         const physicsSettings = queryResult.resources.get<PhysicsSettings>(PhysicsSettingsRes)!;
 
         const velFromGravity = {

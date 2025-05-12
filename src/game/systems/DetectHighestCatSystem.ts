@@ -1,6 +1,6 @@
-import { QueryResult, System, Time } from "cat-plead-engine";
+import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { CatIndex, LifeTime, NextCat, Position, Scale } from "../components";
-import { Time as TimeRes, WarningLevel as WarningLevelRes, Webgl } from "../resources";
+import { WarningLevel as WarningLevelRes, Webgl } from "../resources";
 import { Vector2 } from "../types/Vector2";
 import { WarningLevel } from "@/types/WarningLevel";
 
@@ -9,7 +9,7 @@ export const DetectHighestCatSystem: System = {
         resources: [
             Webgl,
             WarningLevelRes,
-            TimeRes,
+            DefaultResources.Time,
         ],
         all: [
             Position,
@@ -42,7 +42,7 @@ export const DetectHighestCatSystem: System = {
             }
         });
 
-        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
         const warningLevel = queryResult.resources.getRW<WarningLevel>(WarningLevelRes)!;
 
         const warningHeightThreshold = 0.45 * screenHeight;

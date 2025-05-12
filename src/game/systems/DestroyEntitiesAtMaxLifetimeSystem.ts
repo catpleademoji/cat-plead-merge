@@ -1,14 +1,13 @@
-import { Commands, QueryResult, System } from "cat-plead-engine";
+import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
 import { LifeTime, MaxLifeTime } from "../components";
-import { EntityCommands } from "../resources";
 
 export const DestroyEntitiesAtMaxLifetimeSystem: System = {
     query: {
-        resources: [EntityCommands],
+        resources: [DefaultResources.Commands],
         all: [LifeTime, MaxLifeTime]
     },
     run(queryResult: QueryResult): void {
-        const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+        const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
 
         queryResult.entities.foreach((components, entity) => {
             const lifetime = components[LifeTime] as number;

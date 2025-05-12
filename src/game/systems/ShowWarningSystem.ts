@@ -24,7 +24,7 @@ export const ShowWarningSystem: System = {
                 warningIntensity = remap(0, Math.E, 0, 0.75, warningIntensity);
                 components[Color] = { r: 1, g: 0, b: 0, a: warningIntensity };
                 const scale = components[Scale] as Vector2;
-                scale.y = 20 * warningIntensity;
+                scale.y = 25 * warningIntensity;
             } else {
                 components[Color] = { r: 1, g: 0, b: 0, a: 0 };
                 const scale = components[Scale] as Vector2;

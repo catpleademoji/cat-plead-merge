@@ -1,23 +1,22 @@
 import { Particle } from "@/types/Particle";
-import { System, QueryResult, Commands } from "cat-plead-engine";
+import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
 import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../components";
 import { EventQueue } from "../EventQueue";
-import { EntityCommands, CatMergedEvents, ParticleAssets } from "../resources";
+import { CatMergedEvents, ParticleAssets } from "../resources";
 import { CatMergeEvent } from "../types/CatMergeEvent";
-import { Colors } from "../types/Color";
 import { Theme } from "@/types/Theme";
 
 export const SpawnParticlesOnMergeSystem: System = {
   query: {
     resources: [
       "theme",
-      EntityCommands,
+      DefaultResources.Commands,
       CatMergedEvents,
       ParticleAssets,
     ]
   },
   run(queryResult: QueryResult) {
-    const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+    const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
     const mergeEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
     const particles = queryResult.resources.get<Particle[]>(ParticleAssets)!;
     const theme = queryResult.resources.get<Theme>("theme")!;

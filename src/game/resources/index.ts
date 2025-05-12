@@ -1,10 +1,6 @@
-export const EntityCommands = "commands";
-export const Time = "time";
-
 export const AudioContext = "audio_context";
 export const Webgl = "webgl";
 export const SpriteMaterial = "sprite-material";
-export const WarningMaterial = "warning-material";
 
 export const PhysicsSettings = "physics_settings";
 

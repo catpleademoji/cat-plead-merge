@@ -1,5 +1,5 @@
-import { System, QueryResult, Commands, Time } from "cat-plead-engine";
-import { EntityCommands, Webgl, CatAssets, CatSpawnTimer as CatSpawnTimerRes, Time as TimeRes } from "../resources";
+import { System, QueryResult, Commands, Time, DefaultResources } from "cat-plead-engine";
+import { Webgl, CatAssets, CatSpawnTimer as CatSpawnTimerRes } from "../resources";
 import { Cat } from "@/types/Cat";
 import { CatIndex, Position, Velocity, Scale, Rotation, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color, NextCat } from "../components";
 import { sphereVolume, sphereInvVolume } from "../math";
@@ -9,11 +9,11 @@ import { Timer } from "@/types/Timer";
 export const SpawnNextCatSystem: System = {
     query: {
         resources: [
-            EntityCommands,
+            DefaultResources.Commands,
             Webgl,
             CatAssets,
             CatSpawnTimerRes,
-            TimeRes,
+            DefaultResources.Time,
         ],
         all: [
             NextCat,
@@ -24,7 +24,7 @@ export const SpawnNextCatSystem: System = {
             return;
         }
 
-        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
         const catSpawnTimer = queryResult.resources.getRW<Timer>(CatSpawnTimerRes)!;
         catSpawnTimer.time += time.delta;
 
@@ -32,7 +32,7 @@ export const SpawnNextCatSystem: System = {
             return;
         }
 
-        const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+        const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
         const gl = queryResult.resources.get<WebGL2RenderingContext>(Webgl)!;
         const cats = queryResult.resources.get<Cat[]>(CatAssets)!;
 

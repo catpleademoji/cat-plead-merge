@@ -1,5 +1,5 @@
-import { Commands, QueryResult, System } from "cat-plead-engine";
-import { Webgl, EntityCommands } from "../resources";
+import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
+import { Webgl } from "../resources";
 import { Position, Rotation, Scale, Color, Sprite } from "../components";
 import { Colors } from "../types/Color";
 
@@ -7,13 +7,13 @@ export const SpawnWarningSystem: System = {
     query: {
         resources: [
             Webgl,
-            EntityCommands,
+            DefaultResources.Commands,
             "warning_sprite",
         ]
     },
     run: function (queryResult: QueryResult): void {
         const gl = queryResult.resources.get<WebGL2RenderingContext>(Webgl)!;
-        const commands = queryResult.resources.get<Commands>(EntityCommands)!;
+        const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
 
         const warningSprite = queryResult.resources.get("warning_sprite");
         const screenWidth = gl.canvas.width;

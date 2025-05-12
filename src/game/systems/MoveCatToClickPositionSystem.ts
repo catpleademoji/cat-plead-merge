@@ -1,15 +1,14 @@
-import { QueryResult, System, Time } from "cat-plead-engine";
+import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { NextCat, Position, TargetPosition } from "../components";
-import { Time as TimeRes } from "../resources";
 import { Vector2 } from "../types/Vector2";
 
 export const MoveCatToClickPositionSystem: System = {
     query: {
-        resources: [TimeRes],
+        resources: [DefaultResources.Time],
         all: [NextCat, TargetPosition, Position],
     },
     run: function (queryResult: QueryResult): void {
-        const time = queryResult.resources.get<Time>(TimeRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
 
         queryResult.entities.foreach((components) => {
             const position = components[Position] as Vector2;

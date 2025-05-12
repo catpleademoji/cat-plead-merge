@@ -64,6 +64,14 @@ export function addSystems(engine: Engine) {
     ]
   };
 
+  const gameOverUpdateGroup: SystemGroup = {
+    canRun(resources: ResourceManager): boolean {
+      const gameState = resources.get<{ isLoss: boolean }>("game_state");
+      return Boolean(gameState?.isLoss);
+    },
+    systems: []
+  }
+
   engine
     .addSystemGroup(Schedules.Start, mainInitializationGroup)
     .addSystemGroup(Schedules.Update, mainUpdateGroup)
@@ -71,5 +79,6 @@ export function addSystems(engine: Engine) {
     .addSystem(Schedules.FixedUpdate, MergeCatsSystem)
     .addSystem(Schedules.Render, RenderSystem)
     .addResource(CatMergedEvents, new EventQueue<CatMergeEvent>())
+    .addResource("game_state", { isLoss: false });
     ;
 }
