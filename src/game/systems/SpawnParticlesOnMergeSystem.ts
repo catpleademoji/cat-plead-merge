@@ -29,7 +29,7 @@ export const SpawnParticlesOnMergeSystem: System = {
         const particle = particles[randomIndex];
 
         const velocityAngle = Math.random() * (Math.PI / 2) - (3 * Math.PI / 4);
-        const speed = Math.random() * (200 - 50) + 50;
+        const speed = Math.random() * (500 - 50) + 50;
         const velocity = {
           x: Math.cos(velocityAngle) * speed,
           y: Math.sin(velocityAngle) * speed,
@@ -40,7 +40,7 @@ export const SpawnParticlesOnMergeSystem: System = {
         const colorIndex = Math.floor(Math.random() * theme.values.length);
         const color = theme.values[colorIndex];
 
-        const maxScale = 1.5;
+        const maxScale = 1 + Math.log(mergeEvent.cat.catIndex);
         const minScale = 0.75;
         const scaleFactor = Math.random() * (maxScale - minScale) + minScale;
 

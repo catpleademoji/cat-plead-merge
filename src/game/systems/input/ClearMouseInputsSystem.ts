@@ -1,4 +1,4 @@
-import { MouseUpEventQueue } from "@/types/MouseEvent";
+import { MouseUpEventQueue } from "@/game/types/MouseEvent";
 import { QueryResult, System } from "cat-plead-engine";
 
 export const ClearMouseInputsSystem : System = {

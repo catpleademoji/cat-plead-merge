@@ -2,7 +2,7 @@ import { QueryResult, System } from "cat-plead-engine";
 import { Color, Scale } from "../components";
 import { remap } from "../math";
 import { WarningLevel as WarningLevelRes } from "../resources";
-import { WarningLevel } from "@/types/WarningLevel";
+import { WarningLevel } from "@/game/types/WarningLevel";
 import { Vector2 } from "../types/Vector2";
 
 export const ShowWarningSystem: System = {

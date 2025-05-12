@@ -8,7 +8,7 @@ import { AudioContext, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
 import { Theme } from "./types/Theme";
-import { MouseDownEventQueue, MouseUpEventQueue } from "./types/MouseEvent";
+import { MouseDownEventQueue, MouseUpEventQueue } from "./game/types/MouseEvent";
 import { addGameplayResources } from "./game/resources/addGameplayResources";
 
 export type CatPleadMergeProps = {

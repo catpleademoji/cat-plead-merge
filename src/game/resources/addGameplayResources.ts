@@ -1,4 +1,4 @@
-import { MouseDownEvent, MouseUpEvent } from "@/types/MouseEvent";
+import { MouseDownEvent, MouseUpEvent } from "@/game/types/MouseEvent";
 import { Engine } from "cat-plead-engine";
 import { MouseDownEvents, MouseUpEvents, CatSpawnTimer, WarningLevel } from ".";
 import { EventQueue } from "../EventQueue";

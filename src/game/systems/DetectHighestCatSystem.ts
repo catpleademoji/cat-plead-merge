@@ -2,7 +2,7 @@ import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { CatIndex, LifeTime, NextCat, Position, Scale } from "../components";
 import { WarningLevel as WarningLevelRes, Webgl } from "../resources";
 import { Vector2 } from "../types/Vector2";
-import { WarningLevel } from "@/types/WarningLevel";
+import { WarningLevel } from "@/game/types/WarningLevel";
 
 export const DetectHighestCatSystem: System = {
     query: {

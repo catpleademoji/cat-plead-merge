@@ -4,7 +4,7 @@ import { Cat } from "@/types/Cat";
 import { CatIndex, Position, Velocity, Scale, Rotation, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color, NextCat } from "../components";
 import { sphereVolume, sphereInvVolume } from "../math";
 import { Colors } from "../types/Color";
-import { Timer } from "@/types/Timer";
+import { Timer } from "@/game/types/Timer";
 
 export const SpawnNextCatSystem: System = {
     query: {
