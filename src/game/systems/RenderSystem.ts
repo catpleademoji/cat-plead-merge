@@ -2,7 +2,7 @@ import { Vector2 } from "@/game/types/Vector2";
 import { matrix3x3 } from "@/webgl/matrix3x3";
 import { QueryResult, System } from "cat-plead-engine";
 import { Color, Position, Rotation, Scale, Sprite } from "../components";
-import { SpriteMaterial, WarningMaterial, Webgl } from "../resources";
+import { SpriteMaterial, Webgl } from "../resources";
 import { ColorRgba } from "../types/Color";
 import { Material } from "@/webgl/Material";
 
@@ -11,7 +11,6 @@ export const RenderSystem: System = {
         resources: [
             Webgl,
             SpriteMaterial,
-            WarningMaterial,
         ],
         all: [
             Position,
@@ -62,14 +61,5 @@ export const RenderSystem: System = {
             gl.uniform4f(spriteMaterial.programInfo.uniformLocations.color, color.r, color.g, color.b, color.a);
             gl.drawArrays(gl.TRIANGLES, 0, 6);
         });
-
-        // const warningMaterial = queryResult.resources.get<Material>(WarningMaterial)!;
-
-        // gl.bindVertexArray(warningMaterial.vao);
-        // gl.useProgram(warningMaterial.programInfo.program);
-
-        // gl.uniformMatrix3fv(warningMaterial.programInfo.uniformLocations.matrix!, false, projection);
-
-        // gl.drawArrays(gl.TRIANGLES, 0, 6);
     },
 }
