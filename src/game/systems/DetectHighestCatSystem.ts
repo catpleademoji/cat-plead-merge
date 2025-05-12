@@ -1,10 +1,8 @@
-import { Commands, QueryResult, System, Time } from "cat-plead-engine";
+import { QueryResult, System, Time } from "cat-plead-engine";
 import { CatIndex, LifeTime, NextCat, Position, Scale } from "../components";
-import { EntityCommands, Time as TimeRes, WarningLevel as WarningLevelRes, Webgl } from "../resources";
+import { Time as TimeRes, WarningLevel as WarningLevelRes, Webgl } from "../resources";
 import { Vector2 } from "../types/Vector2";
-import { Timer } from "@/types/Timer";
 import { WarningLevel } from "@/types/WarningLevel";
-import { warn } from "console";
 
 export const DetectHighestCatSystem: System = {
     query: {
@@ -47,7 +45,7 @@ export const DetectHighestCatSystem: System = {
         const time = queryResult.resources.get<Time>(TimeRes)!;
         const warningLevel = queryResult.resources.getRW<WarningLevel>(WarningLevelRes)!;
 
-        const warningHeightThreshold = 0.35 * screenHeight;
+        const warningHeightThreshold = 0.45 * screenHeight;
         const dangerHeightThreshold = 0.15 * screenHeight;
         if (highestPosition <= warningHeightThreshold) {
             warningLevel.level = (highestPosition - warningHeightThreshold) / (dangerHeightThreshold - warningHeightThreshold);
@@ -57,6 +55,9 @@ export const DetectHighestCatSystem: System = {
 
         if (highestPosition <= dangerHeightThreshold) {
             warningLevel.time += time.delta;
+            if (warningLevel.time > 1) {
+                console.log("Game Over!");
+            }
         } else {
             warningLevel.time = 0;
         }

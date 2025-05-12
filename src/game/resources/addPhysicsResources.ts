@@ -5,7 +5,7 @@ export function addPhysicsResources(engine: Engine) {
     engine.addResource(PhysicsSettings, {
         gravity: {
             x: 0,
-            y: 9.81 * 32,
+            y: 9.81 * 64,
         }
     });
 }

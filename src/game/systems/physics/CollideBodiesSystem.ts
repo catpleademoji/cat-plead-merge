@@ -6,8 +6,8 @@ import { Entity, QueryResult, System } from "cat-plead-engine";
 import { Webgl } from "@/game/resources";
 import { cross, dot } from "@/game/math";
 
-const staticFrictionCats = 0.15;
-const kineticFrictionCats = 0.05;
+const staticFrictionCats = 0.05;
+const kineticFrictionCats = 0.15;
 
 const staticFrictionWall = 0;
 const kineticFrictionWall = 0;
@@ -83,8 +83,8 @@ export const CollideBodiesSystem: System = {
 
                 for (let k = i + 1; k < bodies.length; k++) {
                     const bodyB = bodies[k];
-                    const maxXB = bodyB.position.x - bodyB.colliderRadius;
-                    if (maxXA < maxXB) {
+                    const minXB = bodyB.position.x - bodyB.colliderRadius;
+                    if (maxXA < minXB) {
                         break;
                     }
 

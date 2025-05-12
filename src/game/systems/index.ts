@@ -1,4 +1,4 @@
-import { Engine, Entity, QueryResult, Schedule } from "cat-plead-engine";
+import { Engine, Schedules, SystemGroup } from "cat-plead-engine";
 import { RenderSystem } from "./RenderSystem";
 import { IntegrateMotion } from "./physics/IntegrateMotionSystem";
 import { CollideBodiesSystem } from "./physics/CollideBodiesSystem";
@@ -20,28 +20,56 @@ import { MoveCatToClickPositionSystem } from "./MoveCatToClickPositionSystem";
 import { DetectHighestCatSystem } from "./DetectHighestCatSystem";
 import { SpawnWarningSystem } from "./SpawnWarningSystem";
 import { ShowWarningSystem } from "./ShowWarningSystem";
+import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
 
 export function addSystems(engine: Engine) {
+  const mainInitializationGroup: SystemGroup = {
+    canRun() {
+      return true;
+    },
+    systems: [
+      SpawnEntitiesSystem,
+      SpawnWarningSystem,
+    ]
+  };
+
+  const mainUpdateGroup: SystemGroup = {
+    canRun(resources: ResourceManager) {
+      return true;
+    },
+    systems: [
+      SetCatTargetPositionSystem,
+      SetCatDropPositionSystem,
+      MoveCatToClickPositionSystem,
+      DropCatOnClickSystem,
+      UpdateLifetimeSystem,
+      SpawnNextCatSystem,
+      PlayPopSoundOnMergeSystem,
+      SpawnParticlesOnMergeSystem,
+      ChangeOpacityOnLifetimeSystem,
+      DetectHighestCatSystem,
+      ShowWarningSystem,
+      DestroyEntitiesAtMaxLifetimeSystem,
+      ClearMouseInputsSystem,
+    ]
+  }
+
+  const mainFixedUpdateGroup: SystemGroup = {
+    canRun() {
+      return true;
+    },
+    systems: [
+      IntegrateMotion,
+      CollideBodiesSystem,
+    ]
+  };
+
   engine
-    .addSystem(Schedule.Start, SpawnEntitiesSystem)
-    .addSystem(Schedule.Start, SpawnWarningSystem)
-    .addSystem(Schedule.Update, SetCatTargetPositionSystem)
-    .addSystem(Schedule.Update, SetCatDropPositionSystem)
-    .addSystem(Schedule.Update, MoveCatToClickPositionSystem)
-    .addSystem(Schedule.Update, DropCatOnClickSystem)
-    .addSystem(Schedule.Update, UpdateLifetimeSystem)
-    .addSystem(Schedule.Update, RenderSystem)
-    .addSystem(Schedule.Update, IntegrateMotion)
-    .addSystem(Schedule.Update, CollideBodiesSystem)
-    .addSystem(Schedule.Update, MergeCatsSystem)
-    .addSystem(Schedule.Update, SpawnNextCatSystem)
-    .addSystem(Schedule.Update, PlayPopSoundOnMergeSystem)
-    .addSystem(Schedule.Update, SpawnParticlesOnMergeSystem)
-    .addSystem(Schedule.Update, ChangeOpacityOnLifetimeSystem)
-    .addSystem(Schedule.Update, DetectHighestCatSystem)
-    .addSystem(Schedule.Update, ShowWarningSystem)
-    .addSystem(Schedule.Update, DestroyEntitiesAtMaxLifetimeSystem)
-    .addSystem(Schedule.Update, ClearMouseInputsSystem)
+    .addSystemGroup(Schedules.Start, mainInitializationGroup)
+    .addSystemGroup(Schedules.Update, mainUpdateGroup)
+    .addSystemGroup(Schedules.FixedUpdate, mainFixedUpdateGroup)
+    .addSystem(Schedules.FixedUpdate, MergeCatsSystem)
+    .addSystem(Schedules.Render, RenderSystem)
     .addResource(CatMergedEvents, new EventQueue<CatMergeEvent>())
     ;
 }

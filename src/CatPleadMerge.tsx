@@ -4,12 +4,11 @@ import { useAudioContext } from "./hooks/useAudioContext";
 import { loadSoundEffects } from "./assets/loadAssets";
 import { Engine } from "cat-plead-engine";
 import { addSystems } from "./game/systems";
-import { AudioContext, CatSpawnTimer, MouseDownEvents, MouseUpEvents, SoundEffectAssets } from "./game/resources";
+import { AudioContext, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";
 import { Theme } from "./types/Theme";
-import { MouseDownEvent, MouseDownEventQueue, MouseUpEvent, MouseUpEventQueue } from "./types/MouseEvent";
-import { EventQueue } from "./game/EventQueue";
+import { MouseDownEventQueue, MouseUpEventQueue } from "./types/MouseEvent";
 import { addGameplayResources } from "./game/resources/addGameplayResources";
 
 export type CatPleadMergeProps = {

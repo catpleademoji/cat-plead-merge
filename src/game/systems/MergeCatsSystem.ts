@@ -27,7 +27,7 @@ export const MergeCatsSystem: System = {
     },
     run: function (queryResult: QueryResult): void {
         const lifeTimeThreshold = 0.25;
-        const mergeDistanceAllowance = 1;
+        const mergeDistanceAllowance = 5;
 
         type Body = {
             entity: Entity;
@@ -75,8 +75,8 @@ export const MergeCatsSystem: System = {
                     continue;
                 }
 
-                const maxXB = bodyB.position.x - bodyB.colliderRadius;
-                if (maxXA + mergeDistanceAllowance < maxXB) {
+                const minXB = bodyB.position.x - bodyB.colliderRadius;
+                if (maxXA + mergeDistanceAllowance < minXB) {
                     break;
                 }
 
@@ -84,7 +84,7 @@ export const MergeCatsSystem: System = {
                 const dy = bodyA.position.y - bodyB.position.y;
                 const distancesq = dx * dx + dy * dy;
                 const radii = bodyA.colliderRadius + bodyB.colliderRadius;
-                if (distancesq <= radii * radii + mergeDistanceAllowance) {
+                if (distancesq - mergeDistanceAllowance <= radii * radii) {
                     collisions.push({
                         bodyA,
                         bodyB
