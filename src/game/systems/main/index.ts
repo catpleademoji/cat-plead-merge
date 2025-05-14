@@ -6,12 +6,12 @@ import { DestroyEntitiesAtMaxLifetimeSystem } from "./DestroyEntitiesAtMaxLifeti
 import { DetectHighestCatSystem } from "./DetectHighestCatSystem";
 import { DropCatOnClickSystem } from "./DropCatOnClickSystem";
 import { MoveCatToClickPositionSystem } from "./MoveCatToClickPositionSystem";
-import { PlayPopSoundOnMergeSystem } from "./PlayPopSoundOnMergeSystem";
+import { PlayPopSoundSystem } from "./PlayPopSoundSystem";
 import { SetCatTargetPositionSystem, SetCatDropPositionSystem } from "./SetCatTargetPositionSystem";
 import { SetGameLossSystem } from "./SetGameLossSystem";
 import { ShowWarningSystem } from "./ShowWarningSystem";
 import { SpawnNextCatSystem } from "./SpawnNextCatSystem";
-import { SpawnParticlesOnMergeSystem } from "./SpawnParticlesOnMergeSystem";
+import { SpawnParticlesSystem } from "./SpawnParticlesSystem";
 import { UpdateLifetimeSystem } from "./UpdateLifetimeSystem";
 import { GameState } from "@/game/resources";
 
@@ -27,8 +27,8 @@ export const mainUpdateGroup: SystemGroup = {
         DropCatOnClickSystem,
         UpdateLifetimeSystem,
         SpawnNextCatSystem,
-        PlayPopSoundOnMergeSystem,
-        SpawnParticlesOnMergeSystem,
+        PlayPopSoundSystem,
+        SpawnParticlesSystem,
         ChangeOpacityOnLifetimeSystem,
         DetectHighestCatSystem,
         ShowWarningSystem,

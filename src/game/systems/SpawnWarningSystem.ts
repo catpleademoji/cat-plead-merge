@@ -18,16 +18,18 @@ export const SpawnWarningSystem: System = {
         const warningSprite = queryResult.resources.get(WarningSprite);
         const screenWidth = gl.canvas.width;
         const screenHeight = gl.canvas.height;
+        const warningHeight = 20;
+
         commands.spawnFromComponents({
             [DangerIndicator]: 0,
             [Position]: {
                 x: screenWidth / 2,
-                y: 0.15 * screenHeight,
+                y: 0.15 * screenHeight - (warningHeight / 2),
             },
             [Rotation]: 0,
             [Scale]: {
                 x: screenWidth,
-                y: 20,
+                y: warningHeight,
             },
             [Sprite]: warningSprite,
             [Color]: Colors.red,

@@ -1,13 +1,13 @@
 import { SoundEffect } from "@/types/SoundEffect";
 import { System, QueryResult } from "cat-plead-engine";
 import { EventQueue } from "../../EventQueue";
-import { AudioContext as AudioContextAsset, CatMergedEvents, SoundEffectAssets } from "../../resources";
-import { CatMergeEvent } from "../../types/CatMergeEvent";
+import { AudioContext as AudioContextAsset, CatPoppedEvents, SoundEffectAssets } from "../../resources";
+import { CatPopEvent } from "../../types/CatPopEvent";
 
-export const PlayPopSoundOnMergeSystem: System = {
+export const PlayPopSoundSystem: System = {
   query: {
     resources: [
-      CatMergedEvents,
+      CatPoppedEvents,
       AudioContextAsset,
       SoundEffectAssets,
     ],
@@ -24,7 +24,7 @@ export const PlayPopSoundOnMergeSystem: System = {
     }
 
     const popSoundEffect = soundEffects.get("pop")!;
-    const mergeEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
+    const mergeEvents = queryResult.resources.get<EventQueue<CatPopEvent>>(CatPoppedEvents)!;
 
     mergeEvents.foreach(_ => {
       const source = audioContext.createBufferSource();

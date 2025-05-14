@@ -1,11 +1,11 @@
 import { Commands, DefaultResources, Entity, QueryResult, System } from "cat-plead-engine";
-import { CatAssets, CatMergedEvents } from "../resources";
+import { CatAssets, CatPoppedEvents } from "../resources";
 import { Cat } from "@/types/Cat";
 import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, NextCat, Position, Rotation, Scale, Sprite, Velocity } from "../components";
 import { sphereInvVolume, sphereVolume } from "../math";
 import { Vector2 } from "../types/Vector2";
 import { EventQueue } from "../EventQueue";
-import { CatMergeEvent } from "../types/CatMergeEvent";
+import { CatPopEvent } from "../types/CatPopEvent";
 import { Colors } from "../types/Color";
 
 export const MergeCatsSystem: System = {
@@ -13,7 +13,7 @@ export const MergeCatsSystem: System = {
         resources: [
             DefaultResources.Commands,
             CatAssets,
-            CatMergedEvents,
+            CatPoppedEvents,
         ],
         all: [
             CatIndex,
@@ -27,7 +27,7 @@ export const MergeCatsSystem: System = {
     },
     run: function (queryResult: QueryResult): void {
         const lifeTimeThreshold = 0.25;
-        const mergeDistanceAllowance = 5;
+        const mergeDistanceAllowance = 10;
 
         type Body = {
             entity: Entity;
@@ -95,8 +95,8 @@ export const MergeCatsSystem: System = {
 
         const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
         const catAssets = queryResult.resources.get<Cat[]>(CatAssets)!;
-        const mergedEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
-        mergedEvents.clear();
+        const catPoppedEvents = queryResult.resources.get<EventQueue<CatPopEvent>>(CatPoppedEvents)!;
+        catPoppedEvents.clear();
 
         const groupSizes = new Map<number, number>();
         const entitiesToCreate: {
@@ -152,32 +152,21 @@ export const MergeCatsSystem: System = {
             const components = entity.parents.values()
                 .reduce((components, parent) => {
                     const position = queryResult.entities.getComponent(parent, Position) as Vector2;
-                    const velocity = queryResult.entities.getComponent(parent, Velocity) as Vector2;
                     const rotation = queryResult.entities.getComponent(parent, Rotation) as number;
-                    const angularVelocity = queryResult.entities.getComponent(parent, AngularVelocity) as number;
                     return {
                         position: {
                             x: components.position.x + position.x,
                             y: components.position.y + position.y,
                         },
-                        velocity: {
-                            x: components.velocity.x + velocity.x,
-                            y: components.velocity.y + velocity.y,
-                        },
+
                         rotation: components.rotation + rotation,
-                        angularVelocity: components.angularVelocity + angularVelocity,
                     };
                 }, {
                     position: {
                         x: 0,
                         y: 0,
                     },
-                    velocity: {
-                        x: 0,
-                        y: 0,
-                    },
                     rotation: 0,
-                    angularVelocity: 0
                 });
 
             const cat = catAssets[entity.catIndex];
@@ -201,10 +190,10 @@ export const MergeCatsSystem: System = {
                     y: cat.size,
                 },
                 [Velocity]: {
-                    x: components.velocity.x / entity.parents.size,
-                    y: components.velocity.y / entity.parents.size,
+                    x: 0,
+                    y: 0,
                 },
-                [AngularVelocity]: components.angularVelocity / entity.parents.size,
+                [AngularVelocity]: 0,
                 [InverseMass]: 1 / mass,
                 [InverseInertia]: 1 / momentOfInertia,
                 [LifeTime]: 0,
@@ -213,13 +202,11 @@ export const MergeCatsSystem: System = {
 
             entity.parents.values().forEach(parent => commands.destroyEntity(parent))
             commands.spawnFromComponents(entityComponents);
-            mergedEvents.enqueue({
-                cat: {
-                    catIndex: entity.catIndex,
-                    score: entity.score,
-                    position: entityComponents[Position],
-                    colliderRadius: entityComponents[ColliderRadius],
-                },
+            catPoppedEvents.enqueue({
+                catIndex: entity.catIndex,
+                score: entity.score,
+                position: entityComponents[Position],
+                radius: entityComponents[ColliderRadius],
             });
         });
     }

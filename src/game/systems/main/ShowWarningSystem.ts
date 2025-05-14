@@ -1,4 +1,4 @@
-import { QueryResult, System } from "cat-plead-engine";
+import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { Color, DangerIndicator, Scale } from "@/game/components";
 import { remap } from "@/game/math";
 import { Vector2 } from "@/game/types/Vector2";
@@ -9,26 +9,25 @@ export const ShowWarningSystem: System = {
     query: {
         resources: [
             DangerLevelRes,
+            DefaultResources.Time,
         ],
         all: [
             DangerIndicator,
-            Scale,
+            // Scale,
             Color
         ]
     },
     run: function (queryResult: QueryResult): void {
         const warningLevel = queryResult.resources.get<DangerLevel>(DangerLevelRes)!;
+        const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
+
         queryResult.entities.foreach((components) => {
             if (warningLevel.level > 0) {
                 let warningIntensity = Math.exp(warningLevel.level);
-                warningIntensity = remap(0, Math.E, 0, 0.75, warningIntensity);
-                components[Color] = { r: 1, g: 0, b: 0, a: warningIntensity };
-                const scale = components[Scale] as Vector2;
-                scale.y = 25 * warningIntensity;
+                warningIntensity = remap(1, Math.E, 0, 0.75, warningIntensity);
+                components[Color] = { r: 1, g: 0, b: 0, a: warningIntensity * remap(-1, 1, 0, 1, Math.sin(3 * time.current)) };
             } else {
                 components[Color] = { r: 1, g: 0, b: 0, a: 0 };
-                const scale = components[Scale] as Vector2;
-                scale.y = 0;
             }
         });
     }

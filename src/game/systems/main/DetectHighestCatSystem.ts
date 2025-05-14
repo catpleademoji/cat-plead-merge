@@ -37,8 +37,9 @@ export const DetectHighestCatSystem: System = {
 
             const position = components[Position] as Vector2;
             const scale = components[Scale] as Vector2;
-            if (position.y - scale.y < highestPosition) {
-                highestPosition = position.y;
+            const radius = scale.y / 2;
+            if (position.y - radius < highestPosition) {
+                highestPosition = position.y - radius;
             }
         });
 
@@ -47,6 +48,7 @@ export const DetectHighestCatSystem: System = {
 
         const warningHeightThreshold = 0.45 * screenHeight;
         const dangerHeightThreshold = 0.15 * screenHeight;
+
         if (highestPosition <= warningHeightThreshold) {
             dangerLevel.level = (highestPosition - warningHeightThreshold) / (dangerHeightThreshold - warningHeightThreshold);
         } else {

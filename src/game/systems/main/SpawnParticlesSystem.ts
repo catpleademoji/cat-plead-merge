@@ -2,27 +2,27 @@ import { Particle } from "@/types/Particle";
 import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
 import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../../components";
 import { EventQueue } from "../../EventQueue";
-import { CatMergedEvents, ParticleAssets, Theme as ThemeRes } from "../../resources";
-import { CatMergeEvent } from "../../types/CatMergeEvent";
+import { CatPoppedEvents, ParticleAssets, Theme as ThemeRes } from "../../resources";
+import { CatPopEvent } from "../../types/CatPopEvent";
 import { Theme } from "@/types/Theme";
 
-export const SpawnParticlesOnMergeSystem: System = {
+export const SpawnParticlesSystem: System = {
   query: {
     resources: [
       ThemeRes,
       DefaultResources.Commands,
-      CatMergedEvents,
+      CatPoppedEvents,
       ParticleAssets,
     ]
   },
   run(queryResult: QueryResult) {
     const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
-    const mergeEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
+    const mergeEvents = queryResult.resources.get<EventQueue<CatPopEvent>>(CatPoppedEvents)!;
     const particles = queryResult.resources.get<Particle[]>(ParticleAssets)!;
     const theme = queryResult.resources.get<Theme>(ThemeRes)!;
 
     mergeEvents.foreach(mergeEvent => {
-      const numParticles = Math.min(2, Math.floor(Math.log2(mergeEvent.cat.score)));
+      const numParticles = Math.min(2, Math.floor(Math.log2(mergeEvent.score)));
 
       for (let i = 0; i < numParticles; i++) {
         const randomIndex = Math.floor(Math.random() * particles.length);
@@ -40,15 +40,15 @@ export const SpawnParticlesOnMergeSystem: System = {
         const colorIndex = Math.floor(Math.random() * theme.values.length);
         const color = theme.values[colorIndex];
 
-        const maxScale = 1 + Math.log(mergeEvent.cat.catIndex);
+        const maxScale = 1 + Math.log(mergeEvent.catIndex);
         const minScale = 0.75;
         const scaleFactor = Math.random() * (maxScale - minScale) + minScale;
 
         commands.spawnFromComponents({
           [Sprite]: particle.texture,
           [Position]: {
-            x: mergeEvent.cat.position.x,
-            y: mergeEvent.cat.position.y
+            x: mergeEvent.position.x,
+            y: mergeEvent.position.y
           },
           [Velocity]: velocity,
           [Rotation]: rotation,
