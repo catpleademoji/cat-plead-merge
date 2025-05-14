@@ -29,8 +29,8 @@ export const IntegrateMotion: System = {
             y: physicsSettings.gravity.y * time.delta,
         };
         queryResult.entities.foreach((components) => {
-            const velocity = components["velocity"] as Vector2;
-            const position = components["position"] as Vector2;
+            const velocity = components[Velocity] as Vector2;
+            const position = components[Position] as Vector2;
 
             velocity.x += velFromGravity.x;
             velocity.y += velFromGravity.y;
@@ -38,9 +38,9 @@ export const IntegrateMotion: System = {
             position.x += velocity.x * time.delta;
             position.y += velocity.y * time.delta;
 
-            const angularVelocity = components["angular_velocity"] as number;
-            const rotation = components["rotation"] as number;
-            components["rotation"] = rotation + angularVelocity * time.delta
+            const angularVelocity = components[AngularVelocity] as number;
+            const rotation = components[Rotation] as number;
+            components[Rotation] = rotation + angularVelocity * time.delta
         });
     }
 }

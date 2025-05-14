@@ -1,23 +1,23 @@
 import { QueryResult, System } from "cat-plead-engine";
-import { Color, Scale } from "../components";
-import { remap } from "../math";
-import { WarningLevel as WarningLevelRes } from "../resources";
-import { WarningLevel } from "@/game/types/WarningLevel";
-import { Vector2 } from "../types/Vector2";
+import { Color, DangerIndicator, Scale } from "@/game/components";
+import { remap } from "@/game/math";
+import { Vector2 } from "@/game/types/Vector2";
+import { DangerLevel } from "@/game/types/DangerLevel";
+import { DangerLevel as DangerLevelRes } from "../../resources";
 
 export const ShowWarningSystem: System = {
     query: {
         resources: [
-            WarningLevelRes,
+            DangerLevelRes,
         ],
         all: [
-            "warning_level",
+            DangerIndicator,
             Scale,
             Color
         ]
     },
     run: function (queryResult: QueryResult): void {
-        const warningLevel = queryResult.resources.get<WarningLevel>(WarningLevelRes)!;
+        const warningLevel = queryResult.resources.get<DangerLevel>(DangerLevelRes)!;
         queryResult.entities.foreach((components) => {
             if (warningLevel.level > 0) {
                 let warningIntensity = Math.exp(warningLevel.level);

@@ -2,7 +2,7 @@ import { AssetManifest } from "@/assets/AssetManifest";
 import { loadCats, loadParticles } from "@/assets/loadAssets";
 import { initWebgl } from "@/webgl/initWebgl";
 import { Engine } from "cat-plead-engine";
-import { Webgl, CatAssets, ParticleAssets, SpriteMaterial } from ".";
+import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
 
 export function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, assets: AssetManifest) {
     engine.addResource(Webgl, gl);
@@ -29,7 +29,7 @@ export function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, as
     const srcType = gl.UNSIGNED_BYTE;
     const pixel = new Uint8Array([255, 255, 255, 255]);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-    engine.addResource("warning_sprite", warningSprite);
+    engine.addResource(WarningSprite, warningSprite);
 
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
 

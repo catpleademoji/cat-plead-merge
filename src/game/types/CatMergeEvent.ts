@@ -7,5 +7,4 @@ export type CatMergeEvent = {
     position: Vector2,
     colliderRadius: number;
   };
-  parents: number;
 };

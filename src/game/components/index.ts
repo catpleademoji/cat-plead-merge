@@ -19,3 +19,5 @@ export const MaxLifeTime = "max_life_time";
 export const NextCat = "next_cat";
 export const TargetPosition = "target_position";
 export const DropPosition = "drop_position";
+
+export const DangerIndicator = "danger_indicator";

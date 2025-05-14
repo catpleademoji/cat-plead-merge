@@ -1,7 +1,7 @@
 import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
-import { CatSpawnTimer as CatSpawnTimerRes } from "../resources";
-import { DropPosition, LifeTime, NextCat, Position, TargetPosition } from "../components";
-import { Vector2 } from "../types/Vector2";
+import { CatSpawnTimer as CatSpawnTimerRes } from "../../resources";
+import { DropPosition, LifeTime, NextCat, Position, TargetPosition } from "../../components";
+import { Vector2 } from "../../types/Vector2";
 import { Timer } from "@/game/types/Timer";
 
 export const DropCatOnClickSystem: System = {

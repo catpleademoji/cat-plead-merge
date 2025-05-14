@@ -1,15 +1,15 @@
 import { Particle } from "@/types/Particle";
 import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
-import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../components";
-import { EventQueue } from "../EventQueue";
-import { CatMergedEvents, ParticleAssets } from "../resources";
-import { CatMergeEvent } from "../types/CatMergeEvent";
+import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../../components";
+import { EventQueue } from "../../EventQueue";
+import { CatMergedEvents, ParticleAssets, Theme as ThemeRes } from "../../resources";
+import { CatMergeEvent } from "../../types/CatMergeEvent";
 import { Theme } from "@/types/Theme";
 
 export const SpawnParticlesOnMergeSystem: System = {
   query: {
     resources: [
-      "theme",
+      ThemeRes,
       DefaultResources.Commands,
       CatMergedEvents,
       ParticleAssets,
@@ -19,7 +19,7 @@ export const SpawnParticlesOnMergeSystem: System = {
     const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
     const mergeEvents = queryResult.resources.get<EventQueue<CatMergeEvent>>(CatMergedEvents)!;
     const particles = queryResult.resources.get<Particle[]>(ParticleAssets)!;
-    const theme = queryResult.resources.get<Theme>("theme")!;
+    const theme = queryResult.resources.get<Theme>(ThemeRes)!;
 
     mergeEvents.foreach(mergeEvent => {
       const numParticles = Math.min(2, Math.floor(Math.log2(mergeEvent.cat.score)));

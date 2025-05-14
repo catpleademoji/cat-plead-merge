@@ -1,8 +1,8 @@
 import { SoundEffect } from "@/types/SoundEffect";
 import { System, QueryResult } from "cat-plead-engine";
-import { EventQueue } from "../EventQueue";
-import { AudioContext as AudioContextAsset, CatMergedEvents, SoundEffectAssets } from "../resources";
-import { CatMergeEvent } from "../types/CatMergeEvent";
+import { EventQueue } from "../../EventQueue";
+import { AudioContext as AudioContextAsset, CatMergedEvents, SoundEffectAssets } from "../../resources";
+import { CatMergeEvent } from "../../types/CatMergeEvent";
 
 export const PlayPopSoundOnMergeSystem: System = {
   query: {

@@ -220,7 +220,6 @@ export const MergeCatsSystem: System = {
                     position: entityComponents[Position],
                     colliderRadius: entityComponents[ColliderRadius],
                 },
-                parents: entity.parents.size
             });
         });
     }

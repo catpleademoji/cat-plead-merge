@@ -1,14 +1,14 @@
 import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
-import { CatIndex, LifeTime, NextCat, Position, Scale } from "../components";
-import { WarningLevel as WarningLevelRes, Webgl } from "../resources";
-import { Vector2 } from "../types/Vector2";
-import { WarningLevel } from "@/game/types/WarningLevel";
+import { CatIndex, LifeTime, NextCat, Position, Scale } from "../../components";
+import { DangerLevel as DangerLevelRes, Webgl } from "../../resources";
+import { Vector2 } from "../../types/Vector2";
+import { DangerLevel } from "@/game/types/DangerLevel";
 
 export const DetectHighestCatSystem: System = {
     query: {
         resources: [
             Webgl,
-            WarningLevelRes,
+            DangerLevelRes,
             DefaultResources.Time,
         ],
         all: [
@@ -43,23 +43,20 @@ export const DetectHighestCatSystem: System = {
         });
 
         const time = queryResult.resources.get<Time>(DefaultResources.Time)!;
-        const warningLevel = queryResult.resources.getRW<WarningLevel>(WarningLevelRes)!;
+        const dangerLevel = queryResult.resources.getRW<DangerLevel>(DangerLevelRes)!;
 
         const warningHeightThreshold = 0.45 * screenHeight;
         const dangerHeightThreshold = 0.15 * screenHeight;
         if (highestPosition <= warningHeightThreshold) {
-            warningLevel.level = (highestPosition - warningHeightThreshold) / (dangerHeightThreshold - warningHeightThreshold);
+            dangerLevel.level = (highestPosition - warningHeightThreshold) / (dangerHeightThreshold - warningHeightThreshold);
         } else {
-            warningLevel.level = 0;
+            dangerLevel.level = 0;
         }
 
         if (highestPosition <= dangerHeightThreshold) {
-            warningLevel.time += time.delta;
-            if (warningLevel.time > 1) {
-                console.log("Game Over!");
-            }
+            dangerLevel.time += time.delta;
         } else {
-            warningLevel.time = 0;
+            dangerLevel.time = 0;
         }
     }
 }

@@ -1,9 +1,9 @@
 import { Vector2 } from "@/game/types/Vector2";
 import { matrix3x3 } from "@/webgl/matrix3x3";
 import { QueryResult, System } from "cat-plead-engine";
-import { Color, Position, Rotation, Scale, Sprite } from "../components";
-import { SpriteMaterial, Webgl } from "../resources";
-import { ColorRgba } from "../types/Color";
+import { Color, Position, Rotation, Scale, Sprite } from "../../components";
+import { SpriteMaterial, Webgl } from "../../resources";
+import { ColorRgba } from "../../types/Color";
 import { Material } from "@/webgl/Material";
 
 export const RenderSystem: System = {
