@@ -1,6 +1,6 @@
 import { QueryResult, System } from "cat-plead-engine";
-import { DangerLevel as DangerLevelRes, GameState } from "../../resources";
-import { DangerLevel } from "../../types/DangerLevel";
+import { DangerLevel as DangerLevelRes, GameState } from "@/game/resources";
+import { DangerLevel } from "@/game/types/DangerLevel";
 
 export const SetGameLossSystem: System = {
     query: {

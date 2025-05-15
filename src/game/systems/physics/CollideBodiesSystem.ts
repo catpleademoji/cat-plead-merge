@@ -9,9 +9,6 @@ import { cross, dot } from "@/game/math";
 const staticFrictionCats = 0.1;
 const kineticFrictionCats = 0.15;
 
-const staticFrictionWall = 0;
-const kineticFrictionWall = 0;
-
 const staticFrictionFloor = 0.4;
 const kineticFrictionFloor = 0.2;
 
@@ -138,8 +135,8 @@ export const CollideBodiesSystem: System = {
                             y: 0,
                         },
                         depth: screen.minX + bodyA.colliderRadius - bodyA.position.x,
-                        staticFriction: staticFrictionWall,
-                        kineticFriction: kineticFrictionWall,
+                        staticFriction: 0,
+                        kineticFriction: 0,
                     });
                 }
 
@@ -155,8 +152,8 @@ export const CollideBodiesSystem: System = {
                             y: 0,
                         },
                         depth: bodyA.colliderRadius - (screen.maxX - bodyA.position.x),
-                        staticFriction: staticFrictionWall,
-                        kineticFriction: kineticFrictionWall,
+                        staticFriction: 0,
+                        kineticFriction: 0,
                     });
                 }
 

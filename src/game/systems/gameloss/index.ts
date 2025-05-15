@@ -1,10 +1,10 @@
 import { SystemGroup } from "cat-plead-engine";
 import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
 import { PopCatsSystem } from "./PopCatsSystem";
-import { PlayPopSoundSystem } from "../main/PlayPopSoundSystem";
-import { SpawnParticlesSystem } from "../main/SpawnParticlesSystem";
-import { ShowWarningSystem } from "../main/ShowWarningSystem";
-import { DetectHighestCatSystem } from "../main/DetectHighestCatSystem";
+import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
+import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
+import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
+import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
 
 export const gamelossUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager): boolean {

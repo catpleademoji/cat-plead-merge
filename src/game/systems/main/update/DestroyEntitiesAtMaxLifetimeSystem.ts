@@ -1,5 +1,5 @@
 import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
-import { LifeTime, MaxLifeTime } from "../../components";
+import { LifeTime, MaxLifeTime } from "@/game/components";
 
 export const DestroyEntitiesAtMaxLifetimeSystem: System = {
     query: {

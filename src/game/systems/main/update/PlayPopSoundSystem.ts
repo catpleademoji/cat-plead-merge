@@ -1,8 +1,8 @@
 import { SoundEffect } from "@/types/SoundEffect";
 import { System, QueryResult } from "cat-plead-engine";
-import { EventQueue } from "../../EventQueue";
-import { AudioContext as AudioContextAsset, CatPoppedEvents, SoundEffectAssets } from "../../resources";
-import { CatPopEvent } from "../../types/CatPopEvent";
+import { EventQueue } from "@/game/EventQueue";
+import { AudioContext as AudioContextAsset, CatPoppedEvents, SoundEffectAssets } from "@/game/resources";
+import { CatPopEvent } from "@/game/types/CatPopEvent";
 
 export const PlayPopSoundSystem: System = {
   query: {
