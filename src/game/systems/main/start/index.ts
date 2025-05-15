@@ -1,7 +1,7 @@
 import { SystemGroup } from "cat-plead-engine";
 import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
-import { SpawnEntitiesSystem } from "../../SpawnEntitiesSystem";
-import { SpawnWarningSystem } from "../../SpawnWarningSystem";
+import { SpawnCatsSystem } from "./SpawnCatsSystem";
+import { SpawnWarningSystem } from "./SpawnWarningSystem";
 
 export const mainInitializationGroup: SystemGroup = {
     canRun(resources: ResourceManager) {
@@ -9,7 +9,7 @@ export const mainInitializationGroup: SystemGroup = {
         return !Boolean(gameState?.isLoss);
     },
     systems: [
-        SpawnEntitiesSystem,
+        SpawnCatsSystem,
         SpawnWarningSystem,
     ]
 };

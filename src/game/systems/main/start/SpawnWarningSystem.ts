@@ -1,7 +1,7 @@
 import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
-import { WarningSprite, Webgl } from "../resources";
-import { Position, Rotation, Scale, Color, Sprite, DangerIndicator } from "../components";
-import { Colors } from "../types/Color";
+import { WarningSprite, Webgl } from "../../../resources";
+import { Position, Rotation, Scale, Color, Sprite, DangerIndicator } from "../../../components";
+import { Colors } from "../../../types/Color";
 
 export const SpawnWarningSystem: System = {
     query: {
