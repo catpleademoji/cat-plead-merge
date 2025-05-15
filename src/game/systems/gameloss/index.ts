@@ -5,6 +5,7 @@ import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
 import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
 import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
 import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
+import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
 
 export const gamelossUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager): boolean {
@@ -12,6 +13,7 @@ export const gamelossUpdateGroup: SystemGroup = {
         return Boolean(gameState?.isLoss);
     },
     systems: [
+        ClearCatPoppedEventsSystem,
         PopCatsSystem,
         PlayPopSoundSystem,
         DetectHighestCatSystem,

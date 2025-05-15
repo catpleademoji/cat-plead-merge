@@ -14,6 +14,7 @@ import { SpawnNextCatSystem } from "./update/SpawnNextCatSystem";
 import { SpawnParticlesSystem } from "./update/SpawnParticlesSystem";
 import { UpdateLifetimeSystem } from "./update/UpdateLifetimeSystem";
 import { GameState } from "@/game/resources";
+import { ClearCatPoppedEventsSystem } from "./update/ClearCatPoppedEventsSystem";
 
 export const mainUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager) {
@@ -34,6 +35,7 @@ export const mainUpdateGroup: SystemGroup = {
         ShowWarningSystem,
         DestroyEntitiesAtMaxLifetimeSystem,
         ClearMouseInputsSystem,
+        ClearCatPoppedEventsSystem,
         SetGameLossSystem,
     ]
 }

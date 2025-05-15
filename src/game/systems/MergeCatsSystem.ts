@@ -96,7 +96,6 @@ export const MergeCatsSystem: System = {
         const commands = queryResult.resources.get<Commands>(DefaultResources.Commands)!;
         const catAssets = queryResult.resources.get<Cat[]>(CatAssets)!;
         const catPoppedEvents = queryResult.resources.get<EventQueue<CatPopEvent>>(CatPoppedEvents)!;
-        catPoppedEvents.clear();
 
         const groupSizes = new Map<number, number>();
         const entitiesToCreate: {
