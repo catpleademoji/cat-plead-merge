@@ -25,8 +25,8 @@ export const IntegrateMotion: System = {
         const physicsSettings = queryResult.resources.get<PhysicsSettings>(PhysicsSettingsRes)!;
 
         const velFromGravity = {
-            x: physicsSettings.gravity.x * time.delta,
-            y: physicsSettings.gravity.y * time.delta,
+            x: physicsSettings.gravity.x * time.fixedDelta,
+            y: physicsSettings.gravity.y * time.fixedDelta,
         };
         queryResult.entities.foreach((components) => {
             const velocity = components[Velocity] as Vector2;
@@ -35,12 +35,12 @@ export const IntegrateMotion: System = {
             velocity.x += velFromGravity.x;
             velocity.y += velFromGravity.y;
 
-            position.x += velocity.x * time.delta;
-            position.y += velocity.y * time.delta;
+            position.x += velocity.x * time.fixedDelta;
+            position.y += velocity.y * time.fixedDelta;
 
             const angularVelocity = components[AngularVelocity] as number;
             const rotation = components[Rotation] as number;
-            components[Rotation] = rotation + angularVelocity * time.delta
+            components[Rotation] = rotation + angularVelocity * time.fixedDelta
         });
     }
 }
