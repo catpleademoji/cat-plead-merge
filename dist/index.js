@@ -1,2 +1,2 @@
 import { CatPleadMerge } from "./CatPleadMerge";
-export { CatPleadMerge, };
+export { CatPleadMerge };

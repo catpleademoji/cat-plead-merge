@@ -3,7 +3,12 @@ import { CatAssetData, ParticleAssetData, SoundEffectAssetData } from "./types/a
 import { Theme } from "./types/Theme";
 
 export {
-    CatPleadMerge,
+    CatPleadMerge
 };
 
-export type { CatAssetData, ParticleAssetData, SoundEffectAssetData, Theme };
+export type {
+    CatAssetData,
+    ParticleAssetData,
+    SoundEffectAssetData,
+    Theme
+};
