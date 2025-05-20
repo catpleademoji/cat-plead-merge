@@ -1,9 +1,9 @@
 import { Vector2 } from "@/game/types/Vector2";
 import { matrix3x3 } from "@/webgl/matrix3x3";
 import { QueryResult, System } from "cat-plead-engine";
-import { Color, Position, Rotation, Scale, Sprite } from "../../components";
-import { SpriteMaterial, Webgl } from "../../resources";
-import { ColorRgba } from "../../types/Color";
+import { Color, Position, Rotation, Scale, Sprite } from "@/game/components";
+import { SpriteMaterial, Webgl } from "@/game/resources";
+import { ColorRgba } from "@/game/types/Color";
 import { Material } from "@/webgl/Material";
 
 export const RenderSystem: System = {
@@ -25,12 +25,7 @@ export const RenderSystem: System = {
         const spriteMaterial = queryResult.resources.get<Material>(SpriteMaterial)!;
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        gl.clearDepth(1.0);
-        // gl.enable(gl.DEPTH_TEST); // Enable depth testing
-        // gl.depthFunc(gl.LEQUAL); // Near things obscure far things
-
-        // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         gl.bindVertexArray(spriteMaterial.vao);

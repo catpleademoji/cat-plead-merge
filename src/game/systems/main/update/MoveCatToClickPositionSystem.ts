@@ -1,6 +1,7 @@
 import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
 import { NextCat, Position, TargetPosition } from "@/game/components";
 import { Vector2 } from "@/game/types/Vector2";
+import { expDecay } from "@/game/math";
 
 export const MoveCatToClickPositionSystem: System = {
     query: {
@@ -14,7 +15,7 @@ export const MoveCatToClickPositionSystem: System = {
             const position = components[Position] as Vector2;
             const targetPosition = components[TargetPosition] as Vector2;
 
-            const targetX = targetPosition.x + (position.x - targetPosition.x) * Math.exp(-50 * time.delta);
+            const targetX = expDecay(position.x, targetPosition.x, 50, time.delta);
 
             components[Position] = {
                 x: targetX,

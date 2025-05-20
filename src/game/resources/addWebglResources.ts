@@ -4,18 +4,16 @@ import { initWebgl } from "@/webgl/initWebgl";
 import { Engine } from "cat-plead-engine";
 import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
 
-export function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, assets: AssetManifest) {
+export async function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, assets: AssetManifest) {
     engine.addResource(Webgl, gl);
 
     const materials = initWebgl(gl);
 
-    loadCats(assets.cats, gl).then(cats => {
-        engine.addResource(CatAssets, cats);
-    });
+    const cats = await loadCats(assets.cats, gl);
+    engine.addResource(CatAssets, cats);
 
-    loadParticles(assets.particles, gl).then(particles => {
-        engine.addResource(ParticleAssets, particles);
-    });
+    const particles = await loadParticles(assets.particles, gl)
+    engine.addResource(ParticleAssets, particles);
 
     const warningSprite = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, warningSprite);

@@ -60,7 +60,7 @@ export const SpawnNextCatSystem: System = {
                 x: size,
                 y: size,
             },
-            [Rotation]: 0,
+            [Rotation]: Math.PI,
             [Sprite]: cats[catIndex].texture,
             [AngularVelocity]: 0,
             [InverseMass]: 1 / mass,

@@ -24,6 +24,10 @@ export function invLerp(a: number, b: number, x: number) {
     return (x - a) / (b - a);
 }
 
+export function expDecay(a: number, b: number, decay: number, dt: number) {
+    return b + (a - b) * Math.exp(-decay * dt);
+}
+
 export function sphereVolume(radius: number) {
     const K = Math.PI * 4 / 3;
     return K * Math.pow(radius, 3);

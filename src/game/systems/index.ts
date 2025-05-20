@@ -1,5 +1,4 @@
-import { Engine, Schedules, SystemGroup } from "cat-plead-engine";
-import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
+import { Engine, Schedules } from "cat-plead-engine";
 import { mainUpdateGroup } from "./main";
 import { mainInitializationGroup } from "./main/start";
 import { mainFixedUpdateGroup } from "./physics";
@@ -8,7 +7,6 @@ import { MergeCatsSystem } from "./MergeCatsSystem";
 import { gamelossUpdateGroup } from "./gameloss";
 
 export function addSystems(engine: Engine) {
-
   engine
     .addSystemGroup(Schedules.Start, mainInitializationGroup)
     .addSystemGroup(Schedules.Update, mainUpdateGroup)

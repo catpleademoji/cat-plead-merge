@@ -6,10 +6,13 @@ import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
 import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
 import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
 import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
+import { GameState as GameStateRes } from "@/game/resources";
+import { GameState } from "@/game/types/GameState";
+import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
 
 export const gamelossUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager): boolean {
-        const gameState = resources.get<{ isLoss: boolean }>("game_state");
+        const gameState = resources.get<GameState>(GameStateRes);
         return Boolean(gameState?.isLoss);
     },
     systems: [
@@ -19,5 +22,6 @@ export const gamelossUpdateGroup: SystemGroup = {
         DetectHighestCatSystem,
         SpawnParticlesSystem,
         ShowWarningSystem,
+        UpdateScoreSystem,
     ]
 }

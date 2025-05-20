@@ -13,12 +13,14 @@ import { ShowWarningSystem } from "./update/ShowWarningSystem";
 import { SpawnNextCatSystem } from "./update/SpawnNextCatSystem";
 import { SpawnParticlesSystem } from "./update/SpawnParticlesSystem";
 import { UpdateLifetimeSystem } from "./update/UpdateLifetimeSystem";
-import { GameState } from "@/game/resources";
+import { GameState as GameStateRes } from "@/game/resources";
 import { ClearCatPoppedEventsSystem } from "./update/ClearCatPoppedEventsSystem";
+import { GameState } from "@/game/types/GameState";
+import { UpdateScoreSystem } from "./update/UpdateScoreSystem";
 
 export const mainUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager) {
-        const gameState = resources.get<{ isLoss: boolean }>(GameState);
+        const gameState = resources.get<GameState>(GameStateRes);
         return !Boolean(gameState?.isLoss);
     },
     systems: [
@@ -30,6 +32,7 @@ export const mainUpdateGroup: SystemGroup = {
         SpawnNextCatSystem,
         PlayPopSoundSystem,
         SpawnParticlesSystem,
+        UpdateScoreSystem,
         ChangeOpacityOnLifetimeSystem,
         DetectHighestCatSystem,
         ShowWarningSystem,
