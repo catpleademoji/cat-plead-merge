@@ -9,6 +9,7 @@ import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsS
 import { GameState as GameStateRes } from "@/game/resources";
 import { GameState } from "@/game/types/GameState";
 import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
+import { ClearMouseInputsSystem } from "../main/input/ClearMouseInputsSystem";
 
 export const gamelossUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager): boolean {
@@ -23,5 +24,6 @@ export const gamelossUpdateGroup: SystemGroup = {
         SpawnParticlesSystem,
         ShowWarningSystem,
         UpdateScoreSystem,
+        ClearMouseInputsSystem,
     ]
 }

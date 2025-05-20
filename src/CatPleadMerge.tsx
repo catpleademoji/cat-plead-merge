@@ -31,7 +31,6 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
 
   const [score, setScore] = useState<number>(0);
   const [isLoss, setIsLoss] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useAudioContext((audioContext) => {
@@ -45,6 +44,10 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
   const getGameContainerRef = useCallback((gameContainer: HTMLDivElement | null) => {
     if (gameContainer) {
       function onMouseDown(evt: PointerEvent) {
+        if (isLoss) {
+          return;
+        }
+
         if (evt.button === 0) {
           const mousedownEvents = engine.current.getResource<MouseDownEventQueue>("mousedownevents");
           mousedownEvents?.enqueue({
@@ -55,6 +58,10 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
       }
 
       function onMouseUp(evt: PointerEvent) {
+        if (isLoss) {
+          return;
+        }
+
         if (evt.button === 0) {
           const mouseupEvents = engine.current.getResource<MouseUpEventQueue>("mouseupevents");
           mouseupEvents?.enqueue({
@@ -88,16 +95,11 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
     }
 
     addWebglResources(engine.current, gl, assets)
-      .then(() => setIsLoading(false));
+      .then(() => {
+        setIsLoading(false);
+        engine.current.run();
+      });
   }, []);
-
-  useEffect(() => {
-    if (!isPlaying) {
-      engine.current.stop();
-      return;
-    }
-    engine.current.run();
-  }, [isPlaying]);
 
   useEffect(() => {
     addPhysicsResources(engine.current);
@@ -166,8 +168,7 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
           ) :
           (
             <div>
-              <button onClick={() => setIsPlaying(!isPlaying)}>{isPlaying ? "Pause" : "Play"}</button>
-              {isPlaying && <div>Score: {score}</div>}
+              <div>Score: {score}</div>
               {isLoss && (
                 <>
                   <button onClick={restart}>Play again</button>

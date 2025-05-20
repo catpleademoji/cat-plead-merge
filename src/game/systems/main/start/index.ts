@@ -1,6 +1,6 @@
 import { SystemGroup } from "cat-plead-engine";
 import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
-import { SpawnCatsSystem } from "./SpawnCatsSystem";
+import { SpawnFirstCatSystem } from "./SpawnFirstCatSystem";
 import { SpawnWarningSystem } from "./SpawnWarningSystem";
 import { GameState } from "@/game/types/GameState";
 import { GameState as GameStateRes } from "@/game/resources";
@@ -11,12 +11,12 @@ export const mainInitializationGroup: SystemGroup = {
         return !Boolean(gameState?.isLoss);
     },
     systems: [
-        SpawnCatsSystem,
+        SpawnFirstCatSystem,
         SpawnWarningSystem,
     ],
     resetSystems() {
         this.systems = [
-            SpawnCatsSystem,
+            SpawnFirstCatSystem,
             SpawnWarningSystem
         ];
     }
