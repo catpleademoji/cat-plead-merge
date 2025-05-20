@@ -1,4 +1,4 @@
-import { CatPoppedEvents } from "@/game/resources";
+import { CatPoppedEvents } from "../../../../game/resources";
 export const ClearCatPoppedEventsSystem = {
     query: {
         resources: [

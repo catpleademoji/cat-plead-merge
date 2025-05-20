@@ -1,4 +1,4 @@
-import { createTexture } from "@/webgl/shaderUtils";
+import { createTexture } from "../../webgl/shaderUtils";
 async function loadImage(src) {
     const image = new Image();
     image.src = src;

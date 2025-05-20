@@ -1,6 +1,6 @@
-import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, NextCat, Position, Velocity } from "@/game/components";
-import { Webgl } from "@/game/resources";
-import { cross, dot } from "@/game/math";
+import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, NextCat, Position, Velocity } from "../../../game/components";
+import { Webgl } from "../../../game/resources";
+import { cross, dot } from "../../../game/math";
 const staticFrictionCats = 0.15;
 const kineticFrictionCats = 0.15;
 const staticFrictionFloor = 0.4;

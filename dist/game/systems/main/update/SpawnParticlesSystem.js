@@ -1,6 +1,6 @@
 import { DefaultResources } from "cat-plead-engine";
-import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "@/game/components";
-import { CatPoppedEvents, ParticleAssets, Theme as ThemeRes } from "@/game/resources";
+import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "../../../../game/components";
+import { CatPoppedEvents, ParticleAssets, Theme as ThemeRes } from "../../../../game/resources";
 export const SpawnParticlesSystem = {
     query: {
         resources: [

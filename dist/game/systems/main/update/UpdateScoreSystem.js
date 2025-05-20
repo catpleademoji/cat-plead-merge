@@ -1,4 +1,4 @@
-import { CatPoppedEvents, GameState as GameStateRes } from "@/game/resources";
+import { CatPoppedEvents, GameState as GameStateRes } from "../../../../game/resources";
 export const UpdateScoreSystem = {
     query: {
         resources: [

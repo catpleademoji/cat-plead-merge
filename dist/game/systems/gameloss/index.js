@@ -4,7 +4,7 @@ import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
 import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
 import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
 import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
-import { GameState as GameStateRes } from "@/game/resources";
+import { GameState as GameStateRes } from "../../../game/resources";
 import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
 import { ClearMouseInputsSystem } from "../main/input/ClearMouseInputsSystem";
 export const gamelossUpdateGroup = {

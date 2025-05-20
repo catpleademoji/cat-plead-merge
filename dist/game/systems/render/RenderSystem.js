@@ -1,6 +1,6 @@
-import { matrix3x3 } from "@/webgl/matrix3x3";
-import { Color, Position, Rotation, Scale, Sprite } from "@/game/components";
-import { SpriteMaterial, Webgl } from "@/game/resources";
+import { matrix3x3 } from "../../../webgl/matrix3x3";
+import { Color, Position, Rotation, Scale, Sprite } from "../../../game/components";
+import { SpriteMaterial, Webgl } from "../../../game/resources";
 export const RenderSystem = {
     query: {
         resources: [

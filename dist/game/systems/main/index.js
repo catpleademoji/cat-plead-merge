@@ -11,7 +11,7 @@ import { ShowWarningSystem } from "./update/ShowWarningSystem";
 import { SpawnNextCatSystem } from "./update/SpawnNextCatSystem";
 import { SpawnParticlesSystem } from "./update/SpawnParticlesSystem";
 import { UpdateLifetimeSystem } from "./update/UpdateLifetimeSystem";
-import { GameState as GameStateRes } from "@/game/resources";
+import { GameState as GameStateRes } from "../../../game/resources";
 import { ClearCatPoppedEventsSystem } from "./update/ClearCatPoppedEventsSystem";
 import { UpdateScoreSystem } from "./update/UpdateScoreSystem";
 export const mainUpdateGroup = {

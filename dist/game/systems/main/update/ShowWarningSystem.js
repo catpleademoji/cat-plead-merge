@@ -1,7 +1,7 @@
 import { DefaultResources } from "cat-plead-engine";
-import { Color, DangerIndicator } from "@/game/components";
-import { remap } from "@/game/math";
-import { DangerLevel as DangerLevelRes } from "@/game/resources";
+import { Color, DangerIndicator } from "../../../../game/components";
+import { remap } from "../../../../game/math";
+import { DangerLevel as DangerLevelRes } from "../../../../game/resources";
 export const ShowWarningSystem = {
     query: {
         resources: [

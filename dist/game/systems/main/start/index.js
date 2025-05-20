@@ -1,6 +1,6 @@
 import { SpawnFirstCatSystem } from "./SpawnFirstCatSystem";
 import { SpawnWarningSystem } from "./SpawnWarningSystem";
-import { GameState as GameStateRes } from "@/game/resources";
+import { GameState as GameStateRes } from "../../../../game/resources";
 export const mainInitializationGroup = {
     canRun(resources) {
         const gameState = resources.get(GameStateRes);
