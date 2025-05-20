@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
-import { AssetManifest } from "./assets/AssetManifest";
+import { AssetManifest } from "./types/assets/AssetManifest";
 import { useAudioContext } from "./hooks/useAudioContext";
-import { loadSoundEffects } from "./assets/loadAssets";
+import { loadSoundEffects } from "./types/assets/loadAssets";
 import { DefaultResources, Engine, QueryResult, Schedules, Time } from "cat-plead-engine";
-import { addSystems } from "./game/systems";
 import { AudioContext, GameState as GameStateRes, PopTimer, SoundEffectAssets } from "./game/resources";
 import { addPhysicsResources } from "./game/resources/addPhysicsResources";
 import { addWebglResources } from "./game/resources/addWebglResources";

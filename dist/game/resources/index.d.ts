@@ -1,0 +1,16 @@
+export declare const AudioContext = "audio_context";
+export declare const Webgl = "webgl";
+export declare const SpriteMaterial = "sprite-material";
+export declare const Theme = "theme";
+export declare const PhysicsSettings = "physics_settings";
+export declare const CatAssets = "cats";
+export declare const ParticleAssets = "particles";
+export declare const SoundEffectAssets = "sound_effects";
+export declare const WarningSprite = "warning_sprite";
+export declare const CatPoppedEvents = "cat_popped_event_queue";
+export declare const CatSpawnTimer = "cat_spawn_timer";
+export declare const DangerLevel = "warning_level";
+export declare const MouseUpEvents = "mouseupevents";
+export declare const MouseDownEvents = "mousedownevents";
+export declare const GameState = "game_state";
+export declare const PopTimer = "pop_timer";

@@ -1,0 +1,17 @@
+export declare const Position = "position";
+export declare const Rotation = "rotation";
+export declare const Scale = "scale";
+export declare const Velocity = "velocity";
+export declare const AngularVelocity = "angular_velocity";
+export declare const InverseMass = "inv_mass";
+export declare const InverseInertia = "inv_inertia";
+export declare const ColliderRadius = "collider_radius";
+export declare const Sprite = "sprite";
+export declare const Color = "color";
+export declare const CatIndex = "cat_index";
+export declare const LifeTime = "life_time";
+export declare const MaxLifeTime = "max_life_time";
+export declare const NextCat = "next_cat";
+export declare const TargetPosition = "target_position";
+export declare const DropPosition = "drop_position";
+export declare const DangerIndicator = "danger_indicator";

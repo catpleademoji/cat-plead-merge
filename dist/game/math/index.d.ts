@@ -1,0 +1,10 @@
+import { Vector2 } from "../types/Vector2";
+export declare function dot(a: Vector2, b: Vector2): number;
+export declare function cross(a: Vector2, b: Vector2): number;
+export declare function clamp(a: number, min: number, max: number): number;
+export declare function remap(a: number, b: number, c: number, d: number, x: number): number;
+export declare function lerp(a: number, b: number, t: number): number;
+export declare function invLerp(a: number, b: number, x: number): number;
+export declare function expDecay(a: number, b: number, decay: number, dt: number): number;
+export declare function sphereVolume(radius: number): number;
+export declare function sphereInvVolume(volume: number): number;

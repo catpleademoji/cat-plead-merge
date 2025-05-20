@@ -1,5 +1,5 @@
-import { AssetManifest } from "@/assets/AssetManifest";
-import { loadCats, loadParticles } from "@/assets/loadAssets";
+import { AssetManifest } from "@/types/assets/AssetManifest";
+import { loadCats, loadParticles } from "@/types/assets/loadAssets";
 import { initWebgl } from "@/webgl/initWebgl";
 import { Engine } from "cat-plead-engine";
 import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
