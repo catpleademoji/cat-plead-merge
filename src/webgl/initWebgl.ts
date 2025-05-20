@@ -1,7 +1,7 @@
 import { Material } from "@/webgl/Material";
 import { initBuffers } from "./initBuffers";
 import { ProgramInfo } from "./ProgramInfo";
-import { SimpleSpriteShader, WarningEffectShader } from "./ShaderSource";
+import { SimpleSpriteShader } from "./ShaderSource";
 import { initShaderProgram } from "./shaderUtils";
 
 export function initWebgl(gl: WebGL2RenderingContext) {
