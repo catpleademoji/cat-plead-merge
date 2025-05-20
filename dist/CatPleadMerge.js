@@ -1,3 +1,4 @@
+import { Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAudioContext } from "./hooks/useAudioContext";
 import { loadSoundEffects } from "./types/assets/loadAssets";
@@ -125,19 +126,7 @@ export function CatPleadMerge({ id, assets, theme }) {
         setScore(0);
         setIsLoss(false);
     }
-    return (<div ref={getGameContainerRef} className="game-container">
-      <div className="game-ui-container" onPointerDown={(evt) => evt.preventDefault()}>
-        {isLoading ?
-            (<>
-              Loading
-            </>) :
-            (<div>
-              <div>Score: {score}</div>
-              {isLoss && (<>
-                  <button onClick={restart}>Play again</button>
-                </>)}
-            </div>)}
-      </div>
-      <canvas id={id} ref={getCanvasRef}></canvas>
-    </div>);
+    return (_jsxs("div", { ref: getGameContainerRef, className: "game-container", children: [_jsx("div", { className: "game-ui-container", onPointerDown: (evt) => evt.preventDefault(), children: isLoading ?
+                    (_jsx(_Fragment, { children: "Loading" })) :
+                    (_jsxs("div", { children: [_jsxs("div", { children: ["Score: ", score] }), isLoss && (_jsx(_Fragment, { children: _jsx("button", { onClick: restart, children: "Play again" }) }))] })) }), _jsx("canvas", { id: id, ref: getCanvasRef })] }));
 }

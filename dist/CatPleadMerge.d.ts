@@ -5,4 +5,4 @@ export type CatPleadMergeProps = {
     assets: AssetManifest;
     theme: Theme;
 };
-export declare function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps): import("react").JSX.Element;
+export declare function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps): import("react/jsx-runtime").JSX.Element;
