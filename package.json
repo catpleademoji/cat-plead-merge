@@ -1,19 +1,22 @@
 {
   "name": "cat-plead-merge",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "tsc && tsc-alias"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "cat-plead-engine": "github:catpleademoji/cat-plead-engine",
+    "react": "^19.1.0"
+  },
   "devDependencies": {
-    "html-webpack-plugin": "^5.6.0",
-    "webpack": "^5.92.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-merge": "^6.0.1"
-  }
+    "@types/node": "^22.13.13",
+    "@types/react": "^19",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js"
 }
