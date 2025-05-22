@@ -20,12 +20,11 @@ import { RenderSystem } from "./game/systems/render/RenderSystem";
 import { Timer } from "./game/types/Timer";
 
 export type CatPleadMergeProps = {
-  id: string;
   assets: AssetManifest;
   theme: Theme
 }
 
-export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
+export function CatPleadMerge({ assets, theme }: CatPleadMergeProps) {
   const engine = useRef<Engine>(new Engine({ maxTimestep: 1 / 60, fixedTimestep: 1 / 60 }));
 
   const [score, setScore] = useState<number>(0);
@@ -167,17 +166,20 @@ export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
           ) :
           (
             <div>
-              <div>Score: {score}</div>
+              <div>
+                <span id="score-label">Score: </span>
+                <span id="score-value">{score}</span>
+              </div>
               {isLoss && (
                 <>
-                  <button onClick={restart}>Play again</button>
+                  <button id="restart-button" onClick={restart}>Play again</button>
                 </>
               )}
             </div>
           )
         }
       </div>
-      <canvas id={id} ref={getCanvasRef}></canvas>
+      <canvas id="game-canvas" ref={getCanvasRef}></canvas>
     </div>
   );
 }
