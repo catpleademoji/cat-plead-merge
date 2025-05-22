@@ -26,7 +26,7 @@ export type CatPleadMergeProps = {
 }
 
 export function CatPleadMerge({ id, assets, theme }: CatPleadMergeProps) {
-  const engine = useRef<Engine>(new Engine());
+  const engine = useRef<Engine>(new Engine({ maxTimestep: 1 / 60, fixedTimestep: 1 / 60 }));
 
   const [score, setScore] = useState<number>(0);
   const [isLoss, setIsLoss] = useState<boolean>(false);
