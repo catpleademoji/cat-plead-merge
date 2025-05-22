@@ -1,14 +1,15 @@
-import { AudioContext as AudioContextAsset, CatPoppedEvents, SoundEffectAssets } from "../../../../game/resources";
+import { CatPoppedEvents, SoundEffectAssets } from "../../../resources";
+import { AudioContext } from "../../../resources";
 export const PlayPopSoundSystem = {
     query: {
         resources: [
             CatPoppedEvents,
-            AudioContextAsset,
+            AudioContext,
             SoundEffectAssets,
         ],
     },
     run(queryResult) {
-        const audioContext = queryResult.resources.get(AudioContextAsset);
+        const audioContext = queryResult.resources.get(AudioContext);
         if (!audioContext) {
             return;
         }

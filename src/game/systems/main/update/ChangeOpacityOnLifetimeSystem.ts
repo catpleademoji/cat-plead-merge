@@ -1,6 +1,6 @@
-import { QueryResult, System } from "cat-plead-engine";
-import { Color, LifeTime, MaxLifeTime } from "@/game/components";
-import { ColorRgba } from "@/game/types/Color";
+import { System, QueryResult } from "cat-plead-engine";
+import { LifeTime, MaxLifeTime, Color } from "../../../components";
+import { ColorRgba } from "../../../types/Color";
 
 export const ChangeOpacityOnLifetimeSystem: System = {
     query: {

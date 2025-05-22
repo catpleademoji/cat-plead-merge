@@ -21,7 +21,7 @@ export const SpawnWarningSystem = {
             [DangerIndicator]: 0,
             [Position]: {
                 x: screenWidth / 2,
-                y: 0.15 * screenHeight - (warningHeight / 2),
+                y: 0.15 * screenHeight + (warningHeight / 2),
             },
             [Rotation]: 0,
             [Scale]: {

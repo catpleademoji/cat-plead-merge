@@ -1,4 +1,4 @@
-import { EventQueue } from "../../game/EventQueue";
+import { EventQueue } from "../EventQueue";
 export type MouseDownEvent = {
     x: number;
     y: number;

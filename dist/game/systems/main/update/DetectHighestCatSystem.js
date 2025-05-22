@@ -1,6 +1,6 @@
 import { DefaultResources } from "cat-plead-engine";
-import { CatIndex, LifeTime, NextCat, Position, Scale } from "../../../../game/components";
-import { DangerLevel as DangerLevelRes, Webgl } from "../../../../game/resources";
+import { Position, CatIndex, Scale, LifeTime, NextCat } from "../../../components";
+import { DangerLevel as DangerLevelRes, Webgl } from "../../../resources";
 export const DetectHighestCatSystem = {
     query: {
         resources: [

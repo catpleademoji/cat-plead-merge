@@ -1,7 +1,7 @@
-import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
-import { NextCat, Position, TargetPosition } from "@/game/components";
-import { Vector2 } from "@/game/types/Vector2";
-import { expDecay } from "@/game/math";
+import { System, DefaultResources, QueryResult, Time } from "cat-plead-engine";
+import { NextCat, TargetPosition, Position } from "../../../components";
+import { expDecay } from "../../../math";
+import { Vector2 } from "../../../types/Vector2";
 
 export const MoveCatToClickPositionSystem: System = {
     query: {

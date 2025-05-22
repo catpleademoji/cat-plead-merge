@@ -1,6 +1,6 @@
+import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
 import { loadCats, loadParticles } from "../../types/assets/loadAssets";
 import { initWebgl } from "../../webgl/initWebgl";
-import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
 export async function addWebglResources(engine, gl, assets) {
     engine.addResource(Webgl, gl);
     const materials = initWebgl(gl);

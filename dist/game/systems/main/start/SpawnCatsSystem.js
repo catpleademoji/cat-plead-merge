@@ -1,8 +1,8 @@
 import { DefaultResources } from "cat-plead-engine";
-import { Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, CatIndex, LifeTime, Color } from "../../../../game/components";
-import { Webgl, CatAssets } from "../../../../game/resources";
-import { sphereInvVolume, sphereVolume } from "../../../../game/math";
-import { Colors } from "../../../../game/types/Color";
+import { CatIndex, Position, Rotation, Scale, Velocity, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color } from "../../../components";
+import { sphereVolume, sphereInvVolume } from "../../../math";
+import { Webgl, CatAssets } from "../../../resources";
+import { Colors } from "../../../types/Color";
 export const SpawnCatsSystem = {
     query: {
         resources: [

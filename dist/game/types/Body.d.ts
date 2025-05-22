@@ -1,5 +1,5 @@
 import { Entity } from "cat-plead-engine";
-import { Vector2 } from "../../game/types/Vector2";
+import { Vector2 } from "./Vector2";
 export type Body = {
     position: Vector2;
     velocity: Vector2;

@@ -1,8 +1,8 @@
 import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
-import { Color, DangerIndicator } from "@/game/components";
-import { remap } from "@/game/math";
-import { DangerLevel } from "@/game/types/DangerLevel";
-import { DangerLevel as DangerLevelRes } from "@/game/resources";
+import { Color, DangerIndicator } from "../../../components";
+import { remap } from "../../../math";
+import { DangerLevel } from "../../../types/DangerLevel";
+import { DangerLevel as DangerLevelRes } from "../../../resources";
 
 export const ShowWarningSystem: System = {
     query: {

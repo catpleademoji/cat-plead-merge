@@ -1,6 +1,6 @@
-import { CatIndex, Position } from "../../../game/components";
-import { CatAssets, CatPoppedEvents, PopTimer } from "../../../game/resources";
 import { DefaultResources } from "cat-plead-engine";
+import { CatIndex, Position } from "../../components";
+import { CatPoppedEvents, CatAssets, PopTimer } from "../../resources";
 export const PopCatsSystem = {
     query: {
         resources: [

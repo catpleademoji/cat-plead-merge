@@ -1,12 +1,12 @@
-import { PopCatsSystem } from "./PopCatsSystem";
-import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
-import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
-import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
-import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
-import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
-import { GameState as GameStateRes } from "../../../game/resources";
-import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
 import { ClearMouseInputsSystem } from "../main/input/ClearMouseInputsSystem";
+import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
+import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
+import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
+import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
+import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
+import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
+import { PopCatsSystem } from "./PopCatsSystem";
+import { GameState as GameStateRes } from "../../resources";
 export const gamelossUpdateGroup = {
     canRun(resources) {
         const gameState = resources.get(GameStateRes);

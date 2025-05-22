@@ -1,11 +1,11 @@
-import { CatIndex, Position } from "@/game/components";
-import { EventQueue } from "@/game/EventQueue";
-import { CatAssets, CatPoppedEvents, PopTimer } from "@/game/resources";
-import { CatPopEvent } from "@/game/types/CatPopEvent";
-import { Timer } from "@/game/types/Timer";
-import { Vector2 } from "@/game/types/Vector2";
-import { Cat } from "@/types/Cat";
 import { Commands, DefaultResources, Entity, QueryResult, System, Time } from "cat-plead-engine";
+import { Cat } from "../../../types/Cat";
+import { CatIndex, Position } from "../../components";
+import { EventQueue } from "../../EventQueue";
+import { CatPoppedEvents, CatAssets, PopTimer } from "../../resources";
+import { CatPopEvent } from "../../types/CatPopEvent";
+import { Timer } from "../../types/Timer";
+import { Vector2 } from "../../types/Vector2";
 
 export const PopCatsSystem: System = {
     query: {

@@ -1,6 +1,6 @@
 import { DefaultResources } from "cat-plead-engine";
-import { NextCat, Position, TargetPosition } from "../../../../game/components";
-import { expDecay } from "../../../../game/math";
+import { NextCat, TargetPosition, Position } from "../../../components";
+import { expDecay } from "../../../math";
 export const MoveCatToClickPositionSystem = {
     query: {
         resources: [DefaultResources.Time],

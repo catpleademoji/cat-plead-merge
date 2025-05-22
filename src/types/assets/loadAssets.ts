@@ -1,8 +1,8 @@
-import { Cat } from "@/types/Cat";
+import { createTexture } from "../../webgl/shaderUtils";
+import { Cat } from "../Cat";
+import { Particle } from "../Particle";
+import { SoundEffect } from "../SoundEffect";
 import { CatAssetData, ParticleAssetData, SoundEffectAssetData } from "./AssetData";
-import { Particle } from "@/types/Particle";
-import { SoundEffect } from "@/types/SoundEffect";
-import { createTexture } from "@/webgl/shaderUtils";
 
 async function loadImage(src: string) {
     const image = new Image();

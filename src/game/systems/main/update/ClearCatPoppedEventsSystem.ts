@@ -1,7 +1,7 @@
-import { EventQueue } from "@/game/EventQueue";
-import { CatPoppedEvents } from "@/game/resources";
-import { CatPopEvent } from "@/game/types/CatPopEvent";
-import { QueryResult, System } from "cat-plead-engine";
+import { System, QueryResult } from "cat-plead-engine";
+import { EventQueue } from "../../../EventQueue";
+import { CatPoppedEvents } from "../../../resources";
+import { CatPopEvent } from "../../../types/CatPopEvent";
 
 export const ClearCatPoppedEventsSystem: System = {
     query: {

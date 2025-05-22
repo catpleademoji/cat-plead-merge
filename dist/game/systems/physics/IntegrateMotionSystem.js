@@ -1,6 +1,6 @@
-import { AngularVelocity, NextCat, Position, Rotation, Velocity } from "../../../game/components";
-import { PhysicsSettings as PhysicsSettingsRes } from "../../../game/resources";
 import { DefaultResources } from "cat-plead-engine";
+import { Position, Velocity, Rotation, AngularVelocity, NextCat } from "../../components";
+import { PhysicsSettings as PhysicsSettingsRes } from "../../resources";
 export const IntegrateMotion = {
     query: {
         resources: [

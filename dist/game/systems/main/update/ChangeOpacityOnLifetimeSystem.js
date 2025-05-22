@@ -1,4 +1,4 @@
-import { Color, LifeTime, MaxLifeTime } from "../../../../game/components";
+import { LifeTime, MaxLifeTime, Color } from "../../../components";
 export const ChangeOpacityOnLifetimeSystem = {
     query: {
         all: [

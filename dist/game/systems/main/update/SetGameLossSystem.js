@@ -1,4 +1,4 @@
-import { DangerLevel as DangerLevelRes, GameState as GameStateRes } from "../../../../game/resources";
+import { DangerLevel as DangerLevelRes, GameState as GameStateRes } from "../../../resources";
 export const SetGameLossSystem = {
     query: {
         resources: [

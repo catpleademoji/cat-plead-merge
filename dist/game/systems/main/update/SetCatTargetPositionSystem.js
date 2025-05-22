@@ -1,7 +1,7 @@
 import { DefaultResources } from "cat-plead-engine";
-import { DropPosition, NextCat, Scale, TargetPosition } from "../../../../game/components";
-import { MouseDownEvents, MouseUpEvents, Webgl } from "../../../../game/resources";
-import { clamp } from "../../../../game/math";
+import { NextCat, Scale, DropPosition, TargetPosition } from "../../../components";
+import { clamp } from "../../../math";
+import { Webgl, MouseUpEvents, MouseDownEvents } from "../../../resources";
 export const SetCatDropPositionSystem = {
     query: {
         resources: [

@@ -1,4 +1,4 @@
-import { MouseDownEvents, MouseUpEvents } from "../../../../game/resources";
+import { MouseUpEvents, MouseDownEvents } from "../../../resources";
 export const ClearMouseInputsSystem = {
     query: {
         resources: [

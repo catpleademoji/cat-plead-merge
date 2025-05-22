@@ -1,9 +1,9 @@
-import { MouseDownEventQueue, MouseUpEventQueue } from "@/game/types/MouseEvent";
-import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
-import { DropPosition, NextCat, Scale, TargetPosition } from "@/game/components";
-import { MouseDownEvents, MouseUpEvents, Webgl } from "@/game/resources";
-import { Vector2 } from "@/game/types/Vector2";
-import { clamp } from "@/game/math";
+import { System, DefaultResources, QueryResult, Commands } from "cat-plead-engine";
+import { NextCat, Scale, DropPosition, TargetPosition } from "../../../components";
+import { clamp } from "../../../math";
+import { Webgl, MouseUpEvents, MouseDownEvents } from "../../../resources";
+import { MouseUpEventQueue, MouseDownEventQueue } from "../../../types/MouseEvent";
+import { Vector2 } from "../../../types/Vector2";
 
 export const SetCatDropPositionSystem: System = {
     query: {
