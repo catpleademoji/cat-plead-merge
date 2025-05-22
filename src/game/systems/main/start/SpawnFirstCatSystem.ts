@@ -1,9 +1,9 @@
-import { System, QueryResult, Commands, Time, DefaultResources } from "cat-plead-engine";
-import { Webgl, CatAssets, CatSpawnTimer as CatSpawnTimerRes } from "@/game/resources";
-import { Cat } from "@/types/Cat";
-import { CatIndex, Position, Velocity, Scale, Rotation, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color, NextCat } from "@/game/components";
-import { sphereVolume, sphereInvVolume } from "@/game/math";
-import { Colors } from "@/game/types/Color";
+import { System, DefaultResources, QueryResult, Commands } from "cat-plead-engine";
+import { Cat } from "../../../../types/Cat";
+import { CatIndex, NextCat, Position, Velocity, Scale, Rotation, Sprite, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, LifeTime, Color } from "../../../components";
+import { sphereVolume, sphereInvVolume } from "../../../math";
+import { Webgl, CatAssets, CatSpawnTimer } from "../../../resources";
+import { Colors } from "../../../types/Color";
 
 export const SpawnFirstCatSystem: System = {
     query: {
@@ -11,7 +11,7 @@ export const SpawnFirstCatSystem: System = {
             DefaultResources.Commands,
             Webgl,
             CatAssets,
-            CatSpawnTimerRes,
+            CatSpawnTimer,
             DefaultResources.Time,
         ]
     },

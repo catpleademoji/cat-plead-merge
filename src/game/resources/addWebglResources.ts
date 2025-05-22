@@ -1,8 +1,8 @@
-import { AssetManifest } from "@/types/assets/AssetManifest";
-import { loadCats, loadParticles } from "@/types/assets/loadAssets";
-import { initWebgl } from "@/webgl/initWebgl";
 import { Engine } from "cat-plead-engine";
 import { Webgl, CatAssets, ParticleAssets, SpriteMaterial, WarningSprite } from ".";
+import { AssetManifest } from "../../types/assets/AssetManifest";
+import { loadCats, loadParticles } from "../../types/assets/loadAssets";
+import { initWebgl } from "../../webgl/initWebgl";
 
 export async function addWebglResources(engine: Engine, gl: WebGL2RenderingContext, assets: AssetManifest) {
     engine.addResource(Webgl, gl);

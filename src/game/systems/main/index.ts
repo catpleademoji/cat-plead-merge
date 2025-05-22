@@ -1,7 +1,8 @@
-import { SystemGroup } from "cat-plead-engine";
-import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
+import { SystemGroup, ResourceManager } from "cat-plead-engine";
+import { GameState } from "../../types/GameState";
 import { ClearMouseInputsSystem } from "./input/ClearMouseInputsSystem";
 import { ChangeOpacityOnLifetimeSystem } from "./update/ChangeOpacityOnLifetimeSystem";
+import { ClearCatPoppedEventsSystem } from "./update/ClearCatPoppedEventsSystem";
 import { DestroyEntitiesAtMaxLifetimeSystem } from "./update/DestroyEntitiesAtMaxLifetimeSystem";
 import { DetectHighestCatSystem } from "./update/DetectHighestCatSystem";
 import { DropCatOnClickSystem } from "./update/DropCatOnClickSystem";
@@ -13,10 +14,8 @@ import { ShowWarningSystem } from "./update/ShowWarningSystem";
 import { SpawnNextCatSystem } from "./update/SpawnNextCatSystem";
 import { SpawnParticlesSystem } from "./update/SpawnParticlesSystem";
 import { UpdateLifetimeSystem } from "./update/UpdateLifetimeSystem";
-import { GameState as GameStateRes } from "@/game/resources";
-import { ClearCatPoppedEventsSystem } from "./update/ClearCatPoppedEventsSystem";
-import { GameState } from "@/game/types/GameState";
 import { UpdateScoreSystem } from "./update/UpdateScoreSystem";
+import { GameState as GameStateRes } from "../../resources";
 
 export const mainUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager) {

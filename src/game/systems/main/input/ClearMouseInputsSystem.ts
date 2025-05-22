@@ -1,6 +1,6 @@
-import { MouseDownEvents, MouseUpEvents } from "@/game/resources";
-import { MouseDownEventQueue, MouseUpEventQueue } from "@/game/types/MouseEvent";
-import { QueryResult, System } from "cat-plead-engine";
+import { System, QueryResult } from "cat-plead-engine";
+import { MouseUpEvents, MouseDownEvents } from "../../../resources";
+import { MouseDownEventQueue, MouseUpEventQueue } from "../../../types/MouseEvent";
 
 export const ClearMouseInputsSystem : System = {
     query: {

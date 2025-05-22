@@ -1,5 +1,5 @@
 import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
-import { LifeTime } from "@/game/components";
+import { LifeTime } from "../../../components";
 
 export const UpdateLifetimeSystem: System = {
     query: {

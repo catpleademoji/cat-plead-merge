@@ -1,10 +1,10 @@
-import { Particle } from "@/types/Particle";
-import { System, QueryResult, Commands, DefaultResources } from "cat-plead-engine";
-import { Sprite, Position, Velocity, Rotation, Scale, Color, LifeTime, MaxLifeTime, AngularVelocity } from "@/game/components";
-import { EventQueue } from "@/game/EventQueue";
-import { CatPoppedEvents, ParticleAssets, Theme as ThemeRes } from "@/game/resources";
-import { CatPopEvent } from "@/game/types/CatPopEvent";
-import { Theme } from "@/types/Theme";
+import { System, DefaultResources, QueryResult, Commands } from "cat-plead-engine";
+import { Particle } from "../../../../types/Particle";
+import { Theme } from "../../../../types/Theme";
+import { Sprite, Position, Velocity, Rotation, AngularVelocity, Scale, Color, LifeTime, MaxLifeTime } from "../../../components";
+import { EventQueue } from "../../../EventQueue";
+import { Theme as ThemeRes, CatPoppedEvents, ParticleAssets } from "../../../resources";
+import { CatPopEvent } from "../../../types/CatPopEvent";
 
 export const SpawnParticlesSystem: System = {
   query: {

@@ -1,10 +1,10 @@
-import { Vector2 } from "@/game/types/Vector2";
-import { matrix3x3 } from "@/webgl/matrix3x3";
-import { QueryResult, System } from "cat-plead-engine";
-import { Color, Position, Rotation, Scale, Sprite } from "@/game/components";
-import { SpriteMaterial, Webgl } from "@/game/resources";
-import { ColorRgba } from "@/game/types/Color";
-import { Material } from "@/webgl/Material";
+import { System, QueryResult } from "cat-plead-engine";
+import { Material } from "../../../webgl/Material";
+import { matrix3x3 } from "../../../webgl/matrix3x3";
+import { Position, Rotation, Scale, Sprite, Color } from "../../components";
+import { Webgl, SpriteMaterial } from "../../resources";
+import { ColorRgba } from "../../types/Color";
+import { Vector2 } from "../../types/Vector2";
 
 export const RenderSystem: System = {
     query: {

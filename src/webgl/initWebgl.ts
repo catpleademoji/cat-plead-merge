@@ -1,5 +1,5 @@
-import { Material } from "@/webgl/Material";
 import { initBuffers } from "./initBuffers";
+import { Material } from "./Material";
 import { ProgramInfo } from "./ProgramInfo";
 import { SimpleSpriteShader } from "./ShaderSource";
 import { initShaderProgram } from "./shaderUtils";

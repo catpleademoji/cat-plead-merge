@@ -1,8 +1,8 @@
-import { EventQueue } from "@/game/EventQueue";
-import { CatPoppedEvents, GameState as GameStateRes } from "@/game/resources";
-import { CatPopEvent } from "@/game/types/CatPopEvent";
-import { GameState } from "@/game/types/GameState";
-import { QueryResult, System } from "cat-plead-engine";
+import { System, QueryResult } from "cat-plead-engine";
+import { EventQueue } from "../../../EventQueue";
+import { CatPoppedEvents, GameState as GameStateRes } from "../../../resources";
+import { CatPopEvent } from "../../../types/CatPopEvent";
+import { GameState } from "../../../types/GameState";
 
 export const UpdateScoreSystem : System = {
     query: {

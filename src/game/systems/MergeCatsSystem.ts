@@ -1,12 +1,12 @@
 import { Commands, DefaultResources, Entity, QueryResult, System } from "cat-plead-engine";
 import { CatAssets, CatPoppedEvents } from "../resources";
-import { Cat } from "@/types/Cat";
 import { AngularVelocity, CatIndex, ColliderRadius, Color, InverseInertia, InverseMass, LifeTime, NextCat, Position, Rotation, Scale, Sprite, Velocity } from "../components";
 import { sphereInvVolume, sphereVolume } from "../math";
 import { Vector2 } from "../types/Vector2";
 import { EventQueue } from "../EventQueue";
 import { CatPopEvent } from "../types/CatPopEvent";
 import { Colors } from "../types/Color";
+import { Cat } from "../../types/Cat";
 
 export const MergeCatsSystem: System = {
     query: {

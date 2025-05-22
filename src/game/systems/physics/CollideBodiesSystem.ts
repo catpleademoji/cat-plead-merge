@@ -1,10 +1,10 @@
-import { AngularVelocity, ColliderRadius, InverseInertia, InverseMass, NextCat, Position, Velocity } from "@/game/components";
-import { Vector2 } from "@/game/types/Vector2";
-import { Collision } from "@/game/types/Collision";
-import { Body } from "@/game/types/Body";
-import { Entity, QueryResult, System } from "cat-plead-engine";
-import { Webgl } from "@/game/resources";
-import { cross, dot } from "@/game/math";
+import { System, QueryResult, Entity } from "cat-plead-engine";
+import { Position, Velocity, AngularVelocity, InverseMass, InverseInertia, ColliderRadius, NextCat } from "../../components";
+import { dot, cross } from "../../math";
+import { Webgl } from "../../resources";
+import { Collision } from "../../types/Collision";
+import { Vector2 } from "../../types/Vector2";
+import { Body } from "../../types/Body";
 
 const staticFrictionCats = 0.15;
 const kineticFrictionCats = 0.15;

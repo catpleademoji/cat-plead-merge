@@ -1,5 +1,5 @@
-import { Vector2 } from "@/game/types/Vector2";
 import { Body } from "./Body";
+import { Vector2 } from "./Vector2";
 
 export type CollisionEvent = {
     bodyA: Body;

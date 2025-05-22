@@ -1,15 +1,14 @@
-import { SystemGroup } from "cat-plead-engine";
-import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
-import { PopCatsSystem } from "./PopCatsSystem";
-import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
-import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
-import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
-import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
-import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
-import { GameState as GameStateRes } from "@/game/resources";
-import { GameState } from "@/game/types/GameState";
-import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
+import { SystemGroup, ResourceManager } from "cat-plead-engine";
+import { GameState } from "../../types/GameState";
 import { ClearMouseInputsSystem } from "../main/input/ClearMouseInputsSystem";
+import { ClearCatPoppedEventsSystem } from "../main/update/ClearCatPoppedEventsSystem";
+import { DetectHighestCatSystem } from "../main/update/DetectHighestCatSystem";
+import { PlayPopSoundSystem } from "../main/update/PlayPopSoundSystem";
+import { ShowWarningSystem } from "../main/update/ShowWarningSystem";
+import { SpawnParticlesSystem } from "../main/update/SpawnParticlesSystem";
+import { UpdateScoreSystem } from "../main/update/UpdateScoreSystem";
+import { PopCatsSystem } from "./PopCatsSystem";
+import { GameState as GameStateRes } from "../../resources";
 
 export const gamelossUpdateGroup: SystemGroup = {
     canRun(resources: ResourceManager): boolean {

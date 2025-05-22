@@ -1,8 +1,8 @@
-import { AngularVelocity, NextCat, Position, Rotation, Velocity } from "@/game/components";
-import { PhysicsSettings as PhysicsSettingsRes } from "@/game/resources";
-import { PhysicsSettings } from "@/game/types/PhysicsSettings";
-import { Vector2 } from "@/game/types/Vector2";
-import { DefaultResources, QueryResult, System, Time } from "cat-plead-engine";
+import { System, DefaultResources, QueryResult, Time } from "cat-plead-engine";
+import { Position, Velocity, Rotation, AngularVelocity, NextCat } from "../../components";
+import { PhysicsSettings as PhysicsSettingsRes } from "../../resources";
+import { PhysicsSettings } from "../../types/PhysicsSettings";
+import { Vector2 } from "../../types/Vector2";
 
 export const IntegrateMotion: System = {
     query: {

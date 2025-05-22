@@ -1,14 +1,14 @@
-import { Commands, DefaultResources, QueryResult, System } from "cat-plead-engine";
-import { CatSpawnTimer as CatSpawnTimerRes } from "@/game/resources";
-import { DropPosition, LifeTime, NextCat, Position, TargetPosition } from "@/game/components";
-import { Vector2 } from "@/game/types/Vector2";
-import { Timer } from "@/game/types/Timer";
+import { System, DefaultResources, QueryResult, Commands } from "cat-plead-engine";
+import { NextCat, Position, TargetPosition, DropPosition, LifeTime } from "../../../components";
+import { Timer } from "../../../types/Timer";
+import { Vector2 } from "../../../types/Vector2";
+import { CatSpawnTimer } from "../../../resources";
 
 export const DropCatOnClickSystem: System = {
     query: {
         resources: [
             DefaultResources.Commands,
-            CatSpawnTimerRes,
+            CatSpawnTimer,
         ],
         all: [
             NextCat,
@@ -31,7 +31,7 @@ export const DropCatOnClickSystem: System = {
                 commands.removeComponent(entity, DropPosition);
             }
 
-            const catSpawnTimer = queryResult.resources.getRW<Timer>(CatSpawnTimerRes)!;
+            const catSpawnTimer = queryResult.resources.getRW<Timer>(CatSpawnTimer)!;
             catSpawnTimer.time = 0;
         });
     },

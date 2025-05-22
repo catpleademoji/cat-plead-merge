@@ -1,9 +1,8 @@
-import { SystemGroup } from "cat-plead-engine";
-import { ResourceManager } from "cat-plead-engine/dist/src/Resources/ResourceManager";
+import { SystemGroup, ResourceManager } from "cat-plead-engine";
+import { GameState } from "../../../types/GameState";
 import { SpawnFirstCatSystem } from "./SpawnFirstCatSystem";
 import { SpawnWarningSystem } from "./SpawnWarningSystem";
-import { GameState } from "@/game/types/GameState";
-import { GameState as GameStateRes } from "@/game/resources";
+import { GameState as GameStateRes } from "../../../resources";
 
 export const mainInitializationGroup: SystemGroup = {
     canRun(resources: ResourceManager) {

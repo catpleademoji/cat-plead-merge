@@ -1,8 +1,8 @@
-import { MouseDownEvent, MouseUpEvent } from "@/game/types/MouseEvent";
+import { MouseDownEvent, MouseUpEvent } from "../types/MouseEvent";
 import { Engine } from "cat-plead-engine";
 import { MouseDownEvents, MouseUpEvents, CatSpawnTimer, DangerLevel, GameState, CatPoppedEvents, Theme as ThemeRes, PopTimer } from ".";
 import { EventQueue } from "../EventQueue";
-import { Theme } from "@/types/Theme";
+import { Theme } from "../../types/Theme";
 import { CatPopEvent } from "../types/CatPopEvent";
 
 export function addGameplayResources(engine: Engine, theme: Theme) {
